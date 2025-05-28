@@ -9,9 +9,12 @@ import BlogSections from "@/components/blog-section";
 import GallerySection from "@/components/shared/gallery-section";
 // Import other sections as needed
 
-export async function generateMetadata({ params }: { params: { locale: Locale } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
+  // Await the params Promise
+  const { locale } = await params;
+
   // Get dictionary for the locale
-  const dictionary = await getDictionary(params.locale);
+  const dictionary = await getDictionary(locale);
 
   return {
     title: `Harika Spices | ${dictionary.metadata.homeTitle}`,
@@ -19,7 +22,10 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
   };
 }
 
-export default async function Home({ params: { locale } }: { params: { locale: Locale } }) {
+export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
+  // Await the params Promise
+  const { locale } = await params;
+
   // Get dictionary data for the locale
   const dictionary = await getDictionary(locale);
 

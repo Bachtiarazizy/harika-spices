@@ -1,6 +1,6 @@
 "use client";
 
-import { useLenis } from "@studio-freight/react-lenis";
+import { useLenis } from "lenis/react";
 import { useEffect } from "react";
 
 // Hook for scroll-triggered animations
@@ -34,20 +34,15 @@ export function useScrollEvents() {
   useEffect(() => {
     if (!lenis) return;
 
-    const handleScrollStart = () => {
-      console.log("Scroll started");
+    const handleScroll = () => {
+      // You can implement scroll start/stop detection logic here if needed
+      console.log("Scroll event");
     };
 
-    const handleScrollStop = () => {
-      console.log("Scroll stopped");
-    };
-
-    lenis.on("scroll-start", handleScrollStart);
-    lenis.on("scroll-stop", handleScrollStop);
+    lenis.on("scroll", handleScroll);
 
     return () => {
-      lenis.off("scroll-start", handleScrollStart);
-      lenis.off("scroll-stop", handleScrollStop);
+      lenis.off("scroll", handleScroll);
     };
   }, [lenis]);
 
