@@ -1,172 +1,200 @@
-// components/sections/AboutSection.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { Leaf, Globe, Lock } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PRINCIPLES = [
-  {
-    icon: Leaf,
-    title: "Sustainable Agriculture",
-    description: "Committed to environmentally friendly farming practices that protect and nurture our ecosystem.",
-  },
-  {
-    icon: Globe,
-    title: "Direct Farmer Partnerships",
-    description: "Empowering local communities through direct, fair trade partnerships that transform agricultural landscapes.",
-  },
-  {
-    icon: Lock,
-    title: "Supply Chain Integrity",
-    description: "Ensuring complete transparency and traceability from farm to global markets.",
-  },
-];
+// Add interface for AboutSection props
+interface AboutSectionProps {
+  dictionary: {
+    home: {
+      about: {
+        title1: string;
+        title2: string;
+        paragraph1: string;
+        paragraph2: string;
+        paragraph3: string;
+      };
+    };
+  };
+}
 
-export default function AboutSection() {
-  const sectionRef = useRef(null);
-  const titleRef = useRef(null);
-  const contentRef = useRef(null);
-  const principlesRef = useRef<HTMLDivElement>(null);
+export default function AboutSection({ dictionary }: AboutSectionProps) {
+  const stickyTitlesRef = useRef<HTMLElement>(null);
+  const titlesRef = useRef<(HTMLHeadingElement | null)[]>([]);
+
+  // Access translations
+  const about = dictionary.home.about;
+
+  // Sticky titles content
+  const stickyTitles = [about.paragraph1, about.paragraph2, about.paragraph3];
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          toggleActions: "play none none reverse",
-        },
-      });
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
 
-      tl.fromTo(
-        titleRef.current,
+    window.addEventListener("resize", handleResize);
+
+    const stickySection = stickyTitlesRef.current;
+    const titles = titlesRef.current.filter(Boolean);
+
+    if (!stickySection || titles.length !== 3) {
+      window.removeEventListener("resize", handleResize);
+      return;
+    }
+
+    // Initial setup
+    gsap.set(titles[0], { opacity: 1, scale: 1 });
+    gsap.set(titles[1], { opacity: 0, scale: 0.75 });
+    gsap.set(titles[2], { opacity: 0, scale: 0.75 });
+
+    // Pin the sticky section
+    const pinTrigger = ScrollTrigger.create({
+      trigger: stickySection,
+      start: "top top",
+      end: `+=${window.innerHeight * 3}`,
+      pin: true,
+      pinSpacing: true,
+    });
+
+    // Create master timeline for title transitions
+    const masterTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: stickySection,
+        start: "top top",
+        end: `+=${window.innerHeight * 2.5}`,
+        scrub: 0.5,
+      },
+    });
+
+    // First transition: title 0 -> title 1
+    masterTimeline
+      .to(
+        titles[0],
         {
           opacity: 0,
-          y: 50,
-          scale: 0.9,
+          scale: 0.75,
+          duration: 0.3,
+          ease: "power2.out",
         },
+        1
+      )
+      .to(
+        titles[1],
         {
           opacity: 1,
-          y: 0,
           scale: 1,
-          duration: 0.8,
-          ease: "power3.out",
-        }
-      ).fromTo(
-        contentRef.current,
-        {
-          opacity: 0,
-          y: 50,
-          scale: 0.95,
+          duration: 0.3,
+          ease: "power2.in",
         },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        0.3
+        1.25
       );
 
-      if (principlesRef.current) {
-        tl.fromTo(
-          principlesRef.current.children,
-          {
-            opacity: 0,
-            y: 50,
-            scale: 0.9,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            stagger: 0.2,
-            duration: 0.6,
-            ease: "power3.out",
-          },
-          0.6
-        );
-      }
-    }, sectionRef);
+    // Second transition: title 1 -> title 2
+    masterTimeline
+      .to(
+        titles[1],
+        {
+          opacity: 0,
+          scale: 0.75,
+          duration: 0.3,
+          ease: "power2.out",
+        },
+        2
+      )
+      .to(
+        titles[2],
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.in",
+        },
+        2.25
+      );
+    masterTimeline
+      .to(
+        titles[2],
+        {
+          opacity: 0,
+          scale: 0.75,
+          duration: 0.3,
+          ease: "power2.out",
+        },
+        2
+      )
+      .to(
+        titles[3],
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.in",
+        },
+        2.25
+      );
 
-    return () => ctx.revert();
+    return () => {
+      pinTrigger.kill();
+      if (masterTimeline.scrollTrigger) {
+        masterTimeline.scrollTrigger.kill();
+      }
+      masterTimeline.kill();
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-white] 
-      py-24 px-4 md:px-12 lg:px-24 overflow-hidden"
-    >
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-12 -left-12 w-96 h-96 bg-[#8B4513]/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-12 -right-12 w-96 h-96 bg-[#4A2C1D]/10 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="container mx-auto relative z-10">
-        <h2
-          ref={titleRef}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 
-          text-[#4A2C1D] opacity-0"
-        >
-          Our Story, Our <span className="text-[#8B4513]">Mission</span>
-        </h2>
-
-        <div
-          ref={contentRef}
-          className="text-xl text-[#4A2C1D]/80 text-center mb-16 
-          max-w-4xl mx-auto opacity-0"
-        >
-          <p className="mb-6">Harika Spices is a pivotal part of the Harika Export Group, dedicated to showcasing the rich, authentic spice heritage of Indonesia to global markets.</p>
-          <p>
-            Sourced from sustainable farms across Central Java, Sumatra, Maluku, and Sulawesi, we forge direct partnerships with local farmers. Our mission is to deliver exceptional quality while uplifting and empowering local agricultural
-            communities.
-          </p>
+    <>
+      {/* Sticky Titles Section */}
+      <section
+        ref={stickyTitlesRef}
+        className="relative bg-white
+        min-h-screen flex flex-col justify-center items-center 
+        px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 overflow-hidden"
+      >
+        {/* Header indicators */}
+        <div className="absolute top-8 left-8 right-8 flex justify-between z-20">
+          <p className="text-sm text-[#8B4513] font-medium">Authentic Origin</p>
+          <p className="text-sm text-[#8B4513] font-medium">Bulk & Wholesale Supply</p>
         </div>
 
-        <div ref={principlesRef} className="grid md:grid-cols-3 gap-8 text-center">
-          {PRINCIPLES.map((principle, index) => (
-            <div
-              key={index}
-              className="bg-white/50 backdrop-blur-md p-8 rounded-2xl 
-              shadow-lg border border-[#8B4513]/10 
-              transform transition duration-300 
-              hover:scale-105 hover:shadow-xl group"
-            >
-              <div
-                className="mb-6 w-20 h-20 mx-auto flex items-center 
-                justify-center rounded-full bg-[#8B4513]/10 
-                group-hover:bg-[#8B4513]/20 transition duration-300"
-              >
-                <principle.icon
-                  size={40}
-                  className="text-[#8B4513] group-hover:scale-110 
-                  transition duration-300"
-                />
-              </div>
-              <h3
-                className="text-xl font-bold mb-4 
-                text-[#4A2C1D] group-hover:text-[#8B4513] 
-                transition duration-300"
-              >
-                {principle.title}
-              </h3>
-              <p
-                className="text-[#4A2C1D]/80 
-                group-hover:text-[#4A2C1D] transition duration-300"
-              >
-                {principle.description}
-              </p>
-            </div>
-          ))}
+        <div className="absolute bottom-8 left-8 right-8 flex justify-between z-20">
+          <p className="text-sm text-[#8B4513] font-medium">Global Reach</p>
+          <p className="text-sm text-[#8B4513] font-medium">Quality Assurance</p>
         </div>
-      </div>
-    </section>
+
+        {/* Main content section with bigger sticky titles */}
+        <div className="text-center max-w-7xl mx-auto relative z-10 w-full">
+          {/* Sticky transitioning titles - Now much bigger and wider */}
+          <div className="relative min-h-[400px] sm:min-h-[500px] flex items-center justify-center px-4 sm:px-8">
+            {stickyTitles.map((title, index) => (
+              <h1
+                key={index}
+                ref={(el) => {
+                  titlesRef.current[index] = el;
+                }}
+                className="absolute inset-0 flex items-center justify-center 
+                text-3xl md:text-5xl 
+                font-bold text-[#4A2C1D] leading-tight sm:leading-tight md:leading-tight
+                opacity-0 px-4 sm:px-8 md:px-12"
+              >
+                {title}
+              </h1>
+            ))}
+          </div>
+        </div>
+
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-amber-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-orange-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-orange-100/10 rounded-full blur-3xl"></div>
+        </div>
+      </section>
+    </>
   );
 }

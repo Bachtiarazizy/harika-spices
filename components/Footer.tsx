@@ -1,18 +1,55 @@
-// components/layout/Footer.tsx
+// components/Footer.tsx
 import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Twitter, Instagram, Linkedin, Leaf, Send } from "lucide-react";
 
-const QUICK_LINKS = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About Us" },
-  { href: "#products", label: "Our Products" },
-  { href: "#sustainability", label: "Sustainability" },
-];
+// Add interface for Footer props to accept dictionary
+interface FooterProps {
+  dictionary: {
+    footer?: {
+      quickLinks?: string;
+      ourProducts?: string;
+      stayConnected?: string;
+      newsletterText?: string;
+      emailPlaceholder?: string;
+      privacyPolicy?: string;
+      termsOfService?: string;
+      allRightsReserved?: string;
+    };
+    navigation: {
+      home: string;
+      about: string;
+      products: string;
+      sustainability: string;
+      contact: string;
+    };
+  };
+}
 
-const PRODUCT_CATEGORIES = ["Cloves", "Black Pepper", "Cinnamon", "Nutmeg", "Cardamom"];
+export default function Footer({ dictionary }: FooterProps) {
+  // Use translation if available, fallback to English
+  const footer = dictionary.footer || {
+    quickLinks: "Quick Links",
+    ourProducts: "Our Products",
+    stayConnected: "Stay Connected",
+    newsletterText: "Subscribe to our newsletter for the latest spice trends and offers.",
+    emailPlaceholder: "Enter your email",
+    privacyPolicy: "Privacy Policy",
+    termsOfService: "Terms of Service",
+    allRightsReserved: "All Rights Reserved",
+  };
 
-export default function Footer() {
+  const nav = dictionary.navigation;
+
+  const QUICK_LINKS = [
+    { href: "/", label: nav.home },
+    { href: "/about", label: nav.about },
+    { href: "/products", label: nav.products },
+    { href: "/sustainability", label: nav.sustainability },
+  ];
+
+  const PRODUCT_CATEGORIES = ["Cloves", "Black Pepper", "Cinnamon", "Nutmeg", "Cardamom"];
+
   return (
     <footer
       className="bg-gradient-to-br from-[#4A2C1D] to-[#8B4513] 
@@ -62,7 +99,7 @@ export default function Footer() {
 
         {/* Quick Links Column */}
         <div>
-          <h4 className="text-xl font-semibold mb-6">Quick Links</h4>
+          <h4 className="text-xl font-semibold mb-6">{footer.quickLinks}</h4>
           <ul className="space-y-4">
             {QUICK_LINKS.map((link) => (
               <li key={link.href}>
@@ -85,7 +122,7 @@ export default function Footer() {
 
         {/* Product Categories Column */}
         <div>
-          <h4 className="text-xl font-semibold mb-6">Our Products</h4>
+          <h4 className="text-xl font-semibold mb-6">{footer.ourProducts}</h4>
           <ul className="space-y-4">
             {PRODUCT_CATEGORIES.map((product) => (
               <li key={product}>
@@ -108,13 +145,13 @@ export default function Footer() {
 
         {/* Newsletter Column */}
         <div>
-          <h4 className="text-xl font-semibold mb-6">Stay Connected</h4>
-          <p className="text-[#F5E6D3]/80 mb-6">Subscribe to our newsletter for the latest spice trends and offers.</p>
+          <h4 className="text-xl font-semibold mb-6">{footer.stayConnected}</h4>
+          <p className="text-[#F5E6D3]/80 mb-6">{footer.newsletterText}</p>
 
           <div className="relative">
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder={footer.emailPlaceholder}
               className="w-full px-4 py-3 rounded-full 
               bg-[#F5E6D3]/10 text-white 
               placeholder-[#F5E6D3]/50 
@@ -137,21 +174,23 @@ export default function Footer() {
         className="mt-12 pt-6 border-t border-[#F5E6D3]/20 
         flex flex-col md:flex-row justify-between items-center"
       >
-        <p className="text-[#F5E6D3]/80 text-sm">&copy; {new Date().getFullYear()} Harika Spices. All Rights Reserved.</p>
+        <p className="text-[#F5E6D3]/80 text-sm">
+          &copy; {new Date().getFullYear()} Harika Spices. {footer.allRightsReserved}
+        </p>
         <div className="flex space-x-4 mt-4 md:mt-0">
           <Link
             href="#"
             className="text-[#F5E6D3]/80 hover:text-white 
             text-sm transition duration-300"
           >
-            Privacy Policy
+            {footer.privacyPolicy}
           </Link>
           <Link
             href="#"
             className="text-[#F5E6D3]/80 hover:text-white 
             text-sm transition duration-300"
           >
-            Terms of Service
+            {footer.termsOfService}
           </Link>
         </div>
       </div>

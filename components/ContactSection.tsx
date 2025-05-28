@@ -1,14 +1,69 @@
-// components/sections/ContactSection.tsx
 "use client";
 
 import { useState, useEffect, useRef, FormEvent } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { Send, MapPin, Phone, Mail, CheckCircle2 } from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ContactSection() {
+// Add interface for ContactSection props
+interface ContactSectionProps {
+  dictionary: {
+    contact: {
+      title: string;
+      location: {
+        title: string;
+        address: string;
+      };
+      phone: {
+        title: string;
+        number: string;
+      };
+      email: {
+        title: string;
+        address: string;
+      };
+      form: {
+        fullName: string;
+        company: string;
+        emailAddress: string;
+        country: string;
+        selectCountry: string;
+        interestedProduct: string;
+        selectProduct: string;
+        estimatedVolume: string;
+        additionalInfo: string;
+        placeholder: string;
+        submitButton: string;
+      };
+      success: {
+        title: string;
+        message: string;
+        submitAnother: string;
+      };
+      countries: {
+        indonesia: string;
+        malaysia: string;
+        singapore: string;
+        unitedStates: string;
+        europe: string;
+        other: string;
+      };
+      products: {
+        cloves: string;
+        blackPepper: string;
+        cinnamon: string;
+        nutmeg: string;
+        cardamom: string;
+        other: string;
+      };
+    };
+  };
+}
+
+export default function ContactSection({ dictionary }: ContactSectionProps) {
   const [formData, setFormData] = useState({
     name: "",
     company: "",
@@ -20,11 +75,16 @@ export default function ContactSection() {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const sectionRef = useRef<HTMLElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const contactInfoRef = useRef<HTMLDivElement>(null);
+
+  // Access translations
+  const contact = dictionary.contact;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -104,18 +164,59 @@ export default function ContactSection() {
     }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    console.log("Form submitted:", formData);
-    setIsSubmitted(true);
+    setIsLoading(true);
+    setErrorMessage("");
+
+    try {
+      // Replace these with your actual EmailJS service ID, template ID, and public key
+      const serviceId = "YOUR_EMAILJS_SERVICE_ID";
+      const templateId = "YOUR_EMAILJS_TEMPLATE_ID";
+      const publicKey = "YOUR_EMAILJS_PUBLIC_KEY";
+
+      // Prepare template parameters based on your EmailJS template
+      const templateParams = {
+        from_name: formData.name,
+        company: formData.company,
+        from_email: formData.email,
+        country: formData.country,
+        product: formData.product,
+        volume: formData.volume,
+        message: formData.message,
+      };
+
+      // Send email using EmailJS
+      const response = await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      if (response.status === 200) {
+        setIsSubmitted(true);
+        // Reset form data
+        setFormData({
+          name: "",
+          company: "",
+          email: "",
+          country: "",
+          product: "",
+          volume: "",
+          message: "",
+        });
+      } else {
+        throw new Error("Failed to send email");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      setErrorMessage("There was a problem sending your message. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isSubmitted) {
     return (
       <section
         ref={sectionRef}
-        className="relative bg-white] 
+        className="relative bg-white
         text-gray-900 py-24 px-4 md:px-12 lg:px-24 overflow-hidden"
       >
         {/* Decorative Background Elements */}
@@ -126,8 +227,8 @@ export default function ContactSection() {
 
         <div className="container mx-auto relative z-10 text-center">
           <CheckCircle2 className="mx-auto mb-8 text-[#8B4513]" size={80} strokeWidth={1.5} />
-          <h2 className="text-4xl font-bold mb-6 text-[#4A2C1D]">Thank You for Your Interest!</h2>
-          <p className="text-xl text-[#4A2C1D]/80 mb-8 max-w-2xl mx-auto">Our team will contact you within 24 hours. We&apos;re excited to help you source the finest Indonesian spices for your business.</p>
+          <h2 className="text-4xl font-bold mb-6 text-[#4A2C1D]">{contact.success.title}</h2>
+          <p className="text-xl text-[#4A2C1D]/80 mb-8 max-w-2xl mx-auto">{contact.success.message}</p>
           <button
             onClick={() => setIsSubmitted(false)}
             className="group flex items-center justify-center gap-2 mx-auto
@@ -135,7 +236,7 @@ export default function ContactSection() {
             rounded-full hover:bg-[#6A3400] 
             transition duration-300 transform hover:scale-105 shadow-lg"
           >
-            Submit Another Request
+            {contact.success.submitAnother}
             <Send className="transition-transform group-hover:translate-x-1" size={20} />
           </button>
         </div>
@@ -161,7 +262,7 @@ export default function ContactSection() {
           className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16 
           text-[#4A2C1D] leading-tight opacity-0"
         >
-          Connect with Harika Spices
+          {contact.title}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-12">
@@ -176,8 +277,8 @@ export default function ContactSection() {
               <div className="flex items-center mb-4">
                 <MapPin className="text-[#8B4513] mr-4" size={40} />
                 <div>
-                  <h3 className="text-2xl font-bold text-[#4A2C1D]">Our Location</h3>
-                  <p className="text-[#4A2C1D]/80">Semarang, Central Java, Indonesia</p>
+                  <h3 className="text-2xl font-bold text-[#4A2C1D]">{contact.location.title}</h3>
+                  <p className="text-[#4A2C1D]/80">{contact.location.address}</p>
                 </div>
               </div>
             </div>
@@ -191,8 +292,8 @@ export default function ContactSection() {
               <div className="flex items-center mb-4">
                 <Phone className="text-[#8B4513] mr-4" size={40} />
                 <div>
-                  <h3 className="text-2xl font-bold text-[#4A2C1D]">Contact Number</h3>
-                  <p className="text-[#4A2C1D]/80">+62 811 272 3939</p>
+                  <h3 className="text-2xl font-bold text-[#4A2C1D]">{contact.phone.title}</h3>
+                  <p className="text-[#4A2C1D]/80">{contact.phone.number}</p>
                 </div>
               </div>
             </div>
@@ -206,8 +307,8 @@ export default function ContactSection() {
               <div className="flex items-center mb-4">
                 <Mail className="text-[#8B4513] mr-4" size={40} />
                 <div>
-                  <h3 className="text-2xl font-bold text-[#4A2C1D]">Email Address</h3>
-                  <p className="text-[#4A2C1D]/80">export@harikaexport.com</p>
+                  <h3 className="text-2xl font-bold text-[#4A2C1D]">{contact.email.title}</h3>
+                  <p className="text-[#4A2C1D]/80">{contact.email.address}</p>
                 </div>
               </div>
             </div>
@@ -221,10 +322,12 @@ export default function ContactSection() {
             border border-[#8B4513]/10 p-8 rounded-2xl 
             shadow-lg opacity-0"
           >
+            {errorMessage && <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">{errorMessage}</div>}
+
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label htmlFor="name" className="block mb-2 text-[#4A2C1D] font-semibold">
-                  Full Name
+                  {contact.form.fullName}
                 </label>
                 <input
                   type="text"
@@ -240,7 +343,7 @@ export default function ContactSection() {
               </div>
               <div>
                 <label htmlFor="company" className="block mb-2 text-[#4A2C1D] font-semibold">
-                  Company
+                  {contact.form.company}
                 </label>
                 <input
                   type="text"
@@ -258,7 +361,7 @@ export default function ContactSection() {
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label htmlFor="email" className="block mb-2 text-[#4A2C1D] font-semibold">
-                  Email Address
+                  {contact.form.emailAddress}
                 </label>
                 <input
                   type="email"
@@ -274,7 +377,7 @@ export default function ContactSection() {
               </div>
               <div>
                 <label htmlFor="country" className="block mb-2 text-[#4A2C1D] font-semibold">
-                  Country
+                  {contact.form.country}
                 </label>
                 <select
                   id="country"
@@ -286,13 +389,13 @@ export default function ContactSection() {
                   focus:outline-none focus:ring-2 focus:ring-[#8B4513] 
                   transition duration-300"
                 >
-                  <option value="">Select Country</option>
-                  <option value="Indonesia">Indonesia</option>
-                  <option value="Malaysia">Malaysia</option>
-                  <option value="Singapore">Singapore</option>
-                  <option value="United States">United States</option>
-                  <option value="Europe">Europe</option>
-                  <option value="Other">Other</option>
+                  <option value="">{contact.form.selectCountry}</option>
+                  <option value="Indonesia">{contact.countries.indonesia}</option>
+                  <option value="Malaysia">{contact.countries.malaysia}</option>
+                  <option value="Singapore">{contact.countries.singapore}</option>
+                  <option value="United States">{contact.countries.unitedStates}</option>
+                  <option value="Europe">{contact.countries.europe}</option>
+                  <option value="Other">{contact.countries.other}</option>
                 </select>
               </div>
             </div>
@@ -300,7 +403,7 @@ export default function ContactSection() {
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label htmlFor="product" className="block mb-2 text-[#4A2C1D] font-semibold">
-                  Interested Product
+                  {contact.form.interestedProduct}
                 </label>
                 <select
                   id="product"
@@ -312,18 +415,18 @@ export default function ContactSection() {
                   focus:outline-none focus:ring-2 focus:ring-[#8B4513] 
                   transition duration-300"
                 >
-                  <option value="">Select Product</option>
-                  <option value="Cloves">Cloves</option>
-                  <option value="Black Pepper">Black Pepper</option>
-                  <option value="Cinnamon">Cinnamon</option>
-                  <option value="Nutmeg">Nutmeg</option>
-                  <option value="Cardamom">Cardamom</option>
-                  <option value="Other">Other</option>
+                  <option value="">{contact.form.selectProduct}</option>
+                  <option value="Cloves">{contact.products.cloves}</option>
+                  <option value="Black Pepper">{contact.products.blackPepper}</option>
+                  <option value="Cinnamon">{contact.products.cinnamon}</option>
+                  <option value="Nutmeg">{contact.products.nutmeg}</option>
+                  <option value="Cardamom">{contact.products.cardamom}</option>
+                  <option value="Other">{contact.products.other}</option>
                 </select>
               </div>
               <div>
                 <label htmlFor="volume" className="block mb-2 text-[#4A2C1D] font-semibold">
-                  Estimated Volume (kg)
+                  {contact.form.estimatedVolume}
                 </label>
                 <input
                   type="number"
@@ -341,7 +444,7 @@ export default function ContactSection() {
 
             <div className="mb-6">
               <label htmlFor="message" className="block mb-2 text-[#4A2C1D] font-semibold">
-                Additional Information
+                {contact.form.additionalInfo}
               </label>
               <textarea
                 id="message"
@@ -352,19 +455,21 @@ export default function ContactSection() {
                 className="w-full p-3 border-2 border-[#8B4513]/20 rounded-lg 
                 focus:outline-none focus:ring-2 focus:ring-[#8B4513] 
                 transition duration-300"
-                placeholder="Add any special requests or additional information"
+                placeholder={contact.form.placeholder}
               ></textarea>
             </div>
 
             <div className="text-center">
               <button
                 type="submit"
-                className="group flex items-center justify-center gap-2 mx-auto
+                disabled={isLoading}
+                className={`group flex items-center justify-center gap-2 mx-auto
                 bg-[#8B4513] text-white px-12 py-4 
                 rounded-full hover:bg-[#6A3400] 
-                transition duration-300 transform hover:scale-105 shadow-lg"
+                transition duration-300 transform hover:scale-105 shadow-lg
+                ${isLoading ? "opacity-70 cursor-not-allowed" : ""}`}
               >
-                Submit Request
+                {isLoading ? "Sending..." : contact.form.submitButton}
                 <Send className="transition-transform group-hover:translate-x-1" size={20} />
               </button>
             </div>
