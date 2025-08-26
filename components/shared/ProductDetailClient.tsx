@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components/shared/ProductDetailClient.tsx
 "use client";
@@ -9,7 +10,6 @@ import { motion } from "framer-motion";
 import { type SanityDocument } from "next-sanity";
 import { Star, MapPin, Package, CheckCircle, AlertCircle, Clock, Calendar, Leaf, Award, Shield, Heart, Share2, Mail, Globe, Thermometer, Droplets, Clock3, ShoppingCart, Info } from "lucide-react";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: {
