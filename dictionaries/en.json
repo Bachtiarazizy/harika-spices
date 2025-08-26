@@ -1,9 +1,14 @@
 {
+  "metadata": {
+    "homeTitle": "Premium Turkish Spices & Seasonings",
+    "homeDescription": "Discover authentic Turkish spices and premium seasonings from Harika Spices. Quality spices sourced directly from Turkey's finest producers."
+  },
   "navigation": {
     "home": "Home",
     "about": "About",
     "products": "Products",
-    "sustainability": "Sustainability",
+    "gallery": "Gallery",
+    "articles": "Articles",
     "contact": "Contact"
   },
   "products": {
@@ -15,12 +20,7 @@
       "premiumCollection": "Premium Collection"
     }
   },
-  "metadata": {
-    "homeTitle": "Premium Indonesian Spices",
-    "homeDescription": "Discover the finest spices from Indonesia with Harika Spices, connecting farmers to global kitchens.",
-    "aboutTitle": "About Us",
-    "aboutDescription": "Learn about Harika Spices, our story, values, and the team behind our premium Indonesian spices."
-  },
+
   "productsSection": {
     "title": "Our Products",
     "subtitle": "Premium agricultural products sourced directly from trusted farmers worldwide",
@@ -89,11 +89,32 @@
       }
     },
     "about": {
-      "title1": "Our Story, Our",
-      "title2": "Mission",
       "paragraph1": "Rooted in Indonesia’s Spice Heritage",
-      "paragraph2": "HarikaSpices partners with trusted farmers across Indonesia to deliver authentic, premium spices like cloves, nutmeg, and pepper to the world.",
-      "paragraph3": "We specialize in bulk B2B exports, with strict quality control, fair trade practices, and global certification compliance."
+      "paragraph2": "Harika Spices partners with trusted farmers across Indonesia to deliver authentic, premium spices like cloves, nutmeg, and pepper to the world.",
+      "paragraph3": "We specialize in bulk B2B exports, with strict quality control, fair trade practices, and glob",
+      "headerIndicators": {
+        "topLeft": "Authentic Origin",
+        "topRight": "Bulk & Wholesale Supply",
+        "bottomLeft": "Global Reach",
+        "bottomRight": "Quality Assurance"
+      }
+    },
+    "products": {
+      "sectionTitle": "Authentic Spices from\nIndonesia's Finest Regions",
+      "subtitle": "Premium Indonesian Spices",
+      "description": "Sourced directly from certified farms across Indonesia's spice islands. Each product represents centuries of tradition, sustainable farming, and uncompromising quality standards.",
+      "viewDetailsButton": "View Details",
+      "categories": { "allProducts": "All Products", "wholeSpices": "Whole Spices", "groundSpices": "Ground Spices", "spiceBlends": "Spice Blends", "organicSpices": "Organic Spices", "premiumCollection": "Premium Collection" },
+      "noProductsFound": "No products found in this category."
+    },
+    "metadata": {
+      "title": "Premium Indonesian Spices | Bulk Export & B2B Supply | HarikaSpices",
+      "description": "Premium Indonesian spices sourced directly from origin. Bulk export of cloves, pepper, nutmeg, cinnamon, ginger & turmeric. Global B2B supply with quality guarantee.",
+      "keywords": "Indonesian spices, bulk spices export, premium cloves, Indonesian pepper, nutmeg supplier, cinnamon bulk, ginger export, turmeric wholesale, B2B spices, spice sourcing Indonesia",
+      "ogTitle": "Premium Indonesian Spices - Direct from Origin | HarikaSpices",
+      "ogDescription": "Discover authentic Indonesian spices sourced directly from native regions. Premium quality cloves, pepper, nutmeg, cinnamon, ginger & turmeric for global B2B buyers.",
+      "twitterTitle": "Premium Indonesian Spices | Bulk Export & Global Supply",
+      "twitterDescription": "Authentic Indonesian spices sourced at origin. Premium quality, global shipping, B2B supply. Cloves, pepper, nutmeg, cinnamon, ginger & turmeric."
     }
   },
   "about": {

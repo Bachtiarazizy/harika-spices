@@ -1,9 +1,14 @@
 {
+  "metadata": {
+    "homeTitle": "Premium Turkish Spices & Seasonings",
+    "homeDescription": "Discover authentic Turkish spices and premium seasonings from Harika Spices. Quality spices sourced directly from Turkey's finest producers."
+  },
   "navigation": {
     "home": "Beranda",
     "about": "Tentang",
     "products": "Produk",
-    "sustainability": "Keberlanjutan",
+    "gallery": "Galleri",
+    "articles": "Berita",
     "contact": "Kontak"
   },
   "products": {
@@ -15,12 +20,7 @@
       "premiumCollection": "Koleksi Premium"
     }
   },
-  "metadata": {
-    "homeTitle": "Rempah Premium dari Indonesia",
-    "homeDescription": "Temukan rempah terbaik dari Indonesia bersama Harika Spices, menghubungkan petani ke dapur dunia.",
-    "aboutTitle": "Tentang Kami",
-    "aboutDescription": "Pelajari tentang Harika Spices, kisah kami, nilai-nilai, dan tim di balik rempah premium kami dari Indonesia."
-  },
+
   "productsSection": {
     "title": "Produk Kami",
     "subtitle": "Produk pertanian premium yang bersumber langsung dari petani terpercaya di seluruh dunia",
@@ -89,11 +89,39 @@
       }
     },
     "about": {
-      "title1": "Kisah Kami,",
-      "title2": "Misi Kami",
-      "paragraph1": "Harika Spices adalah bagian penting dari Harika Export Group, berdedikasi untuk memperkenalkan warisan rempah otentik Indonesia ke pasar global.",
-      "paragraph2": "Berasal dari pertanian berkelanjutan di Jawa Tengah, Sumatra, Maluku, dan Sulawesi, kami menjalin kemitraan langsung dengan petani lokal. Misi kami adalah memberikan kualitas terbaik sambil memberdayakan komunitas pertanian lokal.",
-      "paragraph3": "Berasal dari pertanian berkelanjutan di Jawa Tengah, Sumatra, Maluku, dan Sulawesi, kami menjalin kemitraan langsung dengan petani lokal. Misi kami adalah memberikan kualitas terbaik sambil memberdayakan komunitas pertanian lokal."
+      "paragraph1": "Rooted in Indonesia’s Spice Heritage",
+      "paragraph2": "Harika Spices partners with trusted farmers across Indonesia to deliver authentic, premium spices like cloves, nutmeg, and pepper to the world.",
+      "paragraph3": "We specialize in bulk B2B exports, with strict quality control, fair trade practices, and glob",
+      "headerIndicators": {
+        "topLeft": "Authentic Origin",
+        "topRight": "Bulk & Wholesale Supply",
+        "bottomLeft": "Global Reach",
+        "bottomRight": "Quality Assurance"
+      }
+    },
+    "products": {
+      "sectionTitle": "Rempah Asli dari\nWilayah Terbaik Indonesia",
+      "subtitle": "Rempah Premium Indonesia",
+      "description": "Langsung dari perkebunan bersertifikat di kepulauan rempah Indonesia. Setiap produk mewakili warisan berabad-abad, pertanian berkelanjutan, dan standar kualitas tanpa kompromi.",
+      "viewDetailsButton": "Lihat Detail",
+      "categories": {
+        "allProducts": "Semua Produk",
+        "wholeSpices": "Rempah Utuh",
+        "groundSpices": "Rempah Bubuk",
+        "spiceBlends": "Campuran Rempah",
+        "organicSpices": "Rempah Organik",
+        "premiumCollection": "Koleksi Premium"
+      },
+      "noProductsFound": "Tidak ada produk dalam kategori ini."
+    },
+    "metadata": {
+      "title": "Rempah Premium Indonesia | Ekspor Curah & Suplai B2B | HarikaSpices",
+      "description": "Rempah premium Indonesia langsung dari sumbernya. Ekspor curah cengkeh, lada, pala, kayu manis, jahe & kunyit. Suplai B2B global dengan jaminan kualitas.",
+      "keywords": "rempah Indonesia, ekspor rempah curah, cengkeh premium, lada Indonesia, supplier pala, kayu manis curah, ekspor jahe, kunyit grosir, rempah B2B, sourcing rempah Indonesia",
+      "ogTitle": "Rempah Premium Indonesia - Langsung dari Sumbernya | HarikaSpices",
+      "ogDescription": "Temukan rempah asli Indonesia yang bersumber langsung dari daerah asli. Kualitas premium cengkeh, lada, pala, kayu manis, jahe & kunyit untuk pembeli B2B global.",
+      "twitterTitle": "Rempah Premium Indonesia | Ekspor Curah & Suplai Global",
+      "twitterDescription": "Rempah asli Indonesia dari sumbernya. Kualitas premium, pengiriman global, suplai B2B. Cengkeh, lada, pala, kayu manis, jahe & kunyit."
     }
   },
   "about": {

@@ -236,15 +236,22 @@ const Process = () => {
   return (
     <div ref={containerRef} className="bg-gradient-to-br from-slate-50 via-white to-amber-50 text-slate-800 relative z-10">
       {/* Process Header */}
-      <section className="relative w-full bg-gradient-to-br from-slate-50 via-white to-amber-50 px-8 md:px-16 py-16 md:py-24">
+      <section className="relative w-full bg-gradient-to-br from-slate-50 via-white to-amber-50 px-4 md:px-10 lg:px-16 py-16 md:py-24">
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
-            <ShuffleText as="h2" text="Our Journey From Farm to Your Table" triggerOnScroll={true} className="text-3xl md:text-5xl font-bold text-[#4A2C1D] leading-tight sm:leading-tight md:leading-tight mb-6" />
+            {/* Decorative line matching product section */}
+            <div className="flex items-center justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
+              <div className="w-4 sm:w-8 h-0.5 bg-gradient-to-r from-amber-600 to-orange-600"></div>
+              <p className="font-semibold text-amber-800 uppercase tracking-wider text-xs sm:text-sm">Premium Indonesian Spices</p>
+              <div className="w-4 sm:w-8 h-0.5 bg-gradient-to-r from-amber-600 to-orange-600"></div>
+            </div>
+
+            <ShuffleText as="h1" text="Our Journey From Farm to Your Table" triggerOnScroll={true} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#4A2C1D] leading-tight mb-4 sm:mb-6 px-2" />
             <ShuffleText
               as="p"
               text="Discover how we transform premium spices through our meticulous three-step process, ensuring exceptional quality at every stage."
               triggerOnScroll={true}
-              className="text-medium md:text-lg text-slate-600 max-w-4xl mx-auto leading-relaxed"
+              className="text-sm sm:text-base md:text-lg text-slate-600 max-w-4xl mx-auto leading-relaxed mb-8 sm:mb-12 px-4"
             />
           </div>
         </div>
@@ -319,7 +326,7 @@ const Process = () => {
       </section>
 
       {/* Bottom section with call to action */}
-      <section className="relative w-full bg-gradient-to-br from-[#4A2C1D] to-[#8B4513] text-white px-8 md:px-16 py-16">
+      <section className="relative w-full bg-gradient-to-br from-[#4A2C1D] to-[#8B4513] text-white mt-16 md:mt-40 px-8 md:px-16 py-16">
         <div className="container mx-auto text-center">
           <h3 className="text-2xl md:text-4xl font-bold mb-4 text-white">Ready to Experience Premium Quality?</h3>
           <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">Contact us today to learn more about our wholesale opportunities and premium spice offerings.</p>

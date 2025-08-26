@@ -1,199 +1,173 @@
-// components/Footer.tsx
+import React from "react";
+import { Facebook, Instagram, Linkedin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Twitter, Instagram, Linkedin, Leaf, Send } from "lucide-react";
 
-// Add interface for Footer props to accept dictionary
-interface FooterProps {
-  dictionary: {
-    footer?: {
-      quickLinks?: string;
-      ourProducts?: string;
-      stayConnected?: string;
-      newsletterText?: string;
-      emailPlaceholder?: string;
-      privacyPolicy?: string;
-      termsOfService?: string;
-      allRightsReserved?: string;
-    };
-    navigation: {
-      home: string;
-      about: string;
-      products: string;
-      sustainability: string;
-      contact: string;
-    };
-  };
-}
-
-export default function Footer({ dictionary }: FooterProps) {
-  // Use translation if available, fallback to English
-  const footer = dictionary.footer || {
-    quickLinks: "Quick Links",
-    ourProducts: "Our Products",
-    stayConnected: "Stay Connected",
-    newsletterText: "Subscribe to our newsletter for the latest spice trends and offers.",
-    emailPlaceholder: "Enter your email",
-    privacyPolicy: "Privacy Policy",
-    termsOfService: "Terms of Service",
-    allRightsReserved: "All Rights Reserved",
-  };
-
-  const nav = dictionary.navigation;
-
-  const QUICK_LINKS = [
-    { href: "/", label: nav.home },
-    { href: "/about", label: nav.about },
-    { href: "/products", label: nav.products },
-    { href: "/sustainability", label: nav.sustainability },
-  ];
-
-  const PRODUCT_CATEGORIES = ["Cloves", "Black Pepper", "Cinnamon", "Nutmeg", "Cardamom"];
-
+const Footer = () => {
   return (
-    <footer
-      className="bg-gradient-to-br from-[#4A2C1D] to-[#8B4513] 
-      text-[#F5E6D3] py-16 px-4 md:px-12 lg:px-24"
-    >
-      <div className="container mx-auto grid md:grid-cols-4 gap-12">
-        {/* Brand Column */}
-        <div className="space-y-6">
-          <div className="flex items-center space-x-3">
-            <Image src="/api/placeholder/60/60" alt="Harika Spices Logo" width={60} height={60} className="rounded-full" />
-            <h3 className="text-2xl font-bold">Harika Spices</h3>
-          </div>
-
-          <p className="text-[#F5E6D3]/80">Connecting global kitchens with premium Indonesian spices, empowering local farmers and sustainable agriculture.</p>
-
-          <div className="flex space-x-4">
-            <a
-              href="#"
-              className="text-[#F5E6D3] hover:text-white 
-              transition duration-300 group"
-            >
-              <Facebook size={24} className="group-hover:scale-110 transition duration-300" />
-            </a>
-            <a
-              href="#"
-              className="text-[#F5E6D3] hover:text-white 
-              transition duration-300 group"
-            >
-              <Twitter size={24} className="group-hover:scale-110 transition duration-300" />
-            </a>
-            <a
-              href="#"
-              className="text-[#F5E6D3] hover:text-white 
-              transition duration-300 group"
-            >
-              <Instagram size={24} className="group-hover:scale-110 transition duration-300" />
-            </a>
-            <a
-              href="#"
-              className="text-[#F5E6D3] hover:text-white 
-              transition duration-300 group"
-            >
-              <Linkedin size={24} className="group-hover:scale-110 transition duration-300" />
-            </a>
-          </div>
-        </div>
-
-        {/* Quick Links Column */}
-        <div>
-          <h4 className="text-xl font-semibold mb-6">{footer.quickLinks}</h4>
-          <ul className="space-y-4">
-            {QUICK_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-[#F5E6D3]/80 hover:text-white 
-                  flex items-center gap-2 group transition duration-300"
-                >
-                  <span
-                    className="w-2 h-0.5 bg-[#F5E6D3]/50 
-                    group-hover:w-4 group-hover:bg-white 
-                    transition-all duration-300"
-                  ></span>
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Product Categories Column */}
-        <div>
-          <h4 className="text-xl font-semibold mb-6">{footer.ourProducts}</h4>
-          <ul className="space-y-4">
-            {PRODUCT_CATEGORIES.map((product) => (
-              <li key={product}>
-                <Link
-                  href="#"
-                  className="text-[#F5E6D3]/80 hover:text-white 
-                  flex items-center gap-2 group transition duration-300"
-                >
-                  <Leaf
-                    size={16}
-                    className="text-[#F5E6D3]/50 group-hover:text-white 
-                    transition duration-300"
+    <footer className="bg-[#392E20] text-white">
+      {/* Main Footer Content */}
+      <div className="mx-6 md:mx-16 pt-12 pb-8">
+        <div className="bg-[#4D3D2A] rounded-3xl p-8 md:p-12">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+              {/* Logo and Contact Info */}
+              <div className="lg:col-span-1">
+                {/* <Link href="/" className="flex items-center">
+                  <Image
+                    src="/logo.png" // Ganti dengan path logo asli Anda
+                    alt="Company Logo"
+                    width={250}
+                    height={60}
+                    className="h-8 w-auto sm:h-10 md:h-12 object-contain"
+                    priority
                   />
-                  {product}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+                </Link> */}
+                <div className="mb-6">
+                  <h4 className="text-white font-semibold mb-2">Address</h4>
+                  <p className="text-white text-sm">Semarang, Indonesia</p>
+                </div>
 
-        {/* Newsletter Column */}
-        <div>
-          <h4 className="text-xl font-semibold mb-6">{footer.stayConnected}</h4>
-          <p className="text-[#F5E6D3]/80 mb-6">{footer.newsletterText}</p>
+                <div className="mb-6">
+                  <h4 className="text-white font-semibold mb-2">Contact</h4>
+                  <p className="text-white text-sm">
+                    +90 542 179 3483
+                    <br />
+                    info@harikaspices.com
+                  </p>
+                </div>
 
-          <div className="relative">
-            <input
-              type="email"
-              placeholder={footer.emailPlaceholder}
-              className="w-full px-4 py-3 rounded-full 
-              bg-[#F5E6D3]/10 text-white 
-              placeholder-[#F5E6D3]/50 
-              focus:outline-none focus:ring-2 
-              focus:ring-[#F5E6D3]/50"
-            />
-            <button
-              className="absolute right-1 top-1/2 -translate-y-1/2 
-              bg-[#F5E6D3] text-[#4A2C1D] p-2 rounded-full 
-              hover:bg-white transition duration-300 group"
-            >
-              <Send size={20} className="group-hover:rotate-45 transition duration-300" />
-            </button>
+                {/* Social Media Icons */}
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
+                    <Facebook className="w-4 h-4" />
+                  </div>
+                  <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
+                    <Instagram className="w-4 h-4" />
+                  </div>
+                  <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
+                    <Linkedin className="w-4 h-4" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Column 1 */}
+              <div>
+                <ul className="space-y-3">
+                  <li>
+                    <Link href="/" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Home
+                    </Link>
+                  </li>
+                  <li></li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Our Products
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Quality Standards
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Sustainability
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Contact Us
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <ul className="space-y-3">
+                  <li>
+                    <Link href="/" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Whole Spices
+                    </Link>
+                  </li>
+                  <li></li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Ground Spices
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Seeds & Pods
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Herbs & Leaves
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Specialty / Premium
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              {/* Column 2 */}
+              <div>
+                <ul className="space-y-3">
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      LinkedIn Page
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Instagram Feed
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Latest News
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Events Calendar
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+                      Blog Posts
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Copyright and Additional Links */}
-      <div
-        className="mt-12 pt-6 border-t border-[#F5E6D3]/20 
-        flex flex-col md:flex-row justify-between items-center"
-      >
-        <p className="text-[#F5E6D3]/80 text-sm">
-          &copy; {new Date().getFullYear()} Harika Spices. {footer.allRightsReserved}
-        </p>
-        <div className="flex space-x-4 mt-4 md:mt-0">
-          <Link
-            href="#"
-            className="text-[#F5E6D3]/80 hover:text-white 
-            text-sm transition duration-300"
-          >
-            {footer.privacyPolicy}
-          </Link>
-          <Link
-            href="#"
-            className="text-[#F5E6D3]/80 hover:text-white 
-            text-sm transition duration-300"
-          >
-            {footer.termsOfService}
-          </Link>
+      {/* Bottom Footer */}
+      <div className="px-6 md:px-16 pb-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-white text-sm">© 2025 Harika Spices. All rights reserved.</p>
+
+          <div className="flex gap-6">
+            <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+              Privacy Policy
+            </a>
+            <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+              Terms of Service
+            </a>
+            <a href="#" className="text-white hover:text-gray-300 transition-colors text-sm">
+              Cookie Settings
+            </a>
+          </div>
         </div>
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;
