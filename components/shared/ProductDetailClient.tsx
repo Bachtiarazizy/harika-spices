@@ -188,26 +188,55 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
     email: "",
     company: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleInquirySubmit = (e: React.FormEvent) => {
+  const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission - could integrate with email service
-    console.log("Inquiry submitted:", inquiryForm);
+    setIsSubmitting(true);
+    setSubmitError(null);
 
-    // Reset form and close modal
-    setInquiryForm({
-      quantity: "",
-      message: "",
-      name: "",
-      email: "",
-      company: "",
-    });
-    setShowInquiryModal(false);
+    try {
+      const response = await fetch("/api/send-inquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productName: product.name,
+          name: inquiryForm.name,
+          email: inquiryForm.email,
+          company: inquiryForm.company,
+          quantity: inquiryForm.quantity,
+          message: inquiryForm.message,
+        }),
+      });
 
-    // Show success message
-    alert("Thank you for your inquiry! We'll get back to you within 24 hours.");
+      const data = await response.json();
+
+      if (response.ok) {
+        // Reset form dan tutup modal
+        setInquiryForm({
+          quantity: "",
+          message: "",
+          name: "",
+          email: "",
+          company: "",
+        });
+        setShowInquiryModal(false);
+
+        // Show success message
+        alert("Thank you for your inquiry! We'll get back to you within 24 hours. A confirmation email has been sent to your address.");
+      } else {
+        setSubmitError(data.error || "Failed to send inquiry");
+      }
+    } catch (error) {
+      console.error("Error submitting inquiry:", error);
+      setSubmitError("Network error. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -235,7 +264,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Breadcrumb */}
-      <motion.div className="bg-white/80 backdrop-blur-sm py-4 px-6 md:px-16 mt-12 border-b border-slate-200" initial="hidden" animate="visible">
+      <motion.div className="bg-[#392E20] backdrop-blur-sm py-10 px-6 md:px-16  " initial="hidden" animate="visible"></motion.div>
+      {/* Breadcrumb */}
+      <motion.div className="py-10 px-6 md:px-16  border-b border-slate-200" initial="hidden" animate="visible">
         <div className="max-w-7xl mx-auto">
           <nav className="flex items-center space-x-2 text-sm">
             <Link href="/" className="text-amber-600 hover:text-amber-700 transition-colors">
@@ -546,24 +577,30 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 </div>
               </div>
             )}
-
-            {/* Culinary Uses Tab */}
             {activeTab === "culinary" && product.culinaryUses && product.culinaryUses.length > 0 && (
-              <div className="space-y-8">
-                <h3 className="text-3xl font-calistoga text-slate-900 mb-8">Use Case & Benefits</h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                  {product.culinaryUses.map((use: string, index: number) => (
-                    <div key={index} className="flex items-start gap-4 p-6 bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl border border-amber-200 hover:shadow-md transition-shadow">
-                      <CheckCircle className="text-amber-600 mt-1 flex-shrink-0" size={20} />
-                      <span className="text-amber-800 font-medium leading-relaxed">{use}</span>
-                    </div>
-                  ))}
+              <div className="space-y-12">
+                <h3 className="text-3xl font-calistoga text-slate-900 mb-8">Technical Specifications</h3>
 
-                  {/* Health Benefits */}
-                  {product.healthBenefits && product.healthBenefits.length > 0 && (
-                    <div>
-                      <h3 className="text-2xl font-semibold text-slate-900 mb-6">Health Benefits</h3>
-                      <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-12">
+                  {/* Quality Parameters */}
+                  <div className="space-y-6">
+                    <h4 className="text-xl font-semibold text-slate-900 mb-6">Culinary Use</h4>
+
+                    {product.culinaryUses.map((use: string, index: number) => (
+                      <div key={index} className="flex items-start gap-4 p-6 bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl border border-amber-200 hover:shadow-md transition-shadow">
+                        <CheckCircle className="text-amber-600 mt-1 flex-shrink-0" size={20} />
+                        <span className="text-amber-800 font-medium leading-relaxed">{use}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Packaging & Storage */}
+                  <div className="space-y-6">
+                    <h4 className="text-xl font-semibold text-slate-900 mb-6">Health Benefits</h4>
+
+                    {/* Health Benefits */}
+                    {product.healthBenefits && product.healthBenefits.length > 0 && (
+                      <div>
                         {product.healthBenefits.map((benefit: string, index: number) => (
                           <div key={index} className="flex items-start gap-4 p-4 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-xl border border-emerald-200">
                             <CheckCircle className="text-emerald-600 mt-1 flex-shrink-0" size={20} />
@@ -571,8 +608,8 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                           </div>
                         ))}
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -707,16 +744,39 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   />
                 </div>
 
+                {/* Error message */}
+                {submitError && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4 flex items-center gap-2">
+                    <AlertCircle size={18} />
+                    <span>{submitError}</span>
+                  </div>
+                )}
+
                 {/* Form Actions */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
                   <button
                     type="submit"
-                    className="flex-1 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                    disabled={isSubmitting}
+                    className="flex-1 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Send size={20} />
-                    Send Inquiry
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={20} />
+                        Send Inquiry
+                      </>
+                    )}
                   </button>
-                  <button type="button" onClick={() => setShowInquiryModal(false)} className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
+                  <button
+                    type="button"
+                    onClick={() => setShowInquiryModal(false)}
+                    disabled={isSubmitting}
+                    className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-4 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50"
+                  >
                     Cancel
                   </button>
                 </div>

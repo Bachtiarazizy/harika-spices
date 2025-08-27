@@ -21,13 +21,17 @@ const ARTICLE_QUERY = `*[_type == "blogPost" && slug.current == $slug][0]{
   },
   author->{
     _id,
-    name
+    name,
+    bio
   },
   categories[]->{
     _id,
-    title
+    title,
+    slug
   },
-  tags
+  tags,
+  featured,
+  language
 }`;
 
 const RELATED_ARTICLES_QUERY = `*[_type == "blogPost" && slug.current != $slug][0...3]{

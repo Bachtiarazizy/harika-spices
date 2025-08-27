@@ -160,8 +160,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     notFound();
   }
 
-  // Fetch related products - FIXED query parameters
-  const relatedProducts = await client.fetch<SanityDocument[]>(RELATED_PRODUCTS_QUERY, { slug: resolvedParams.slug });
+  // Fetch related products - FIXED: pass correct parameter
+  const relatedProducts = await client.fetch<SanityDocument[]>(RELATED_PRODUCTS_QUERY, {
+    slug: resolvedParams.slug,
+    categoryId: product.category?._id,
+  });
 
   return <ProductDetailClient product={product} relatedProducts={relatedProducts} />;
 }
