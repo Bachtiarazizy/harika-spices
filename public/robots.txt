@@ -1,0 +1,23 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /studio/
+Disallow: /_next/
+Disallow: /draft/
+
+# Googlebot
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /studio/
+Disallow: /draft/
+Crawl-delay: 1
+
+# Host
+Host: https://harikaspices.com
+
+# Sitemaps
+Sitemap: https://harikaspices.com/sitemap.xml

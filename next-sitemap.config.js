@@ -1,29 +1,29 @@
-// next-sitemap.config.ts
-import type { IConfig, ISitemapField } from "next-sitemap";
-import { client } from "./sanity/client";
+/* eslint-disable @typescript-eslint/no-require-imports */
+// next-sitemap.config.js
+const { createClient } = require("next-sanity");
 
-type ChangefreqValue = "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
+// Fallback values
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "r9vvbjp4";
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-01-01";
 
-interface SanityProduct {
-  slug: string;
-  updatedAt?: string;
-  publishedAt?: string;
-  _updatedAt?: string;
-}
+// Buat client Sanity langsung di sini
+const client = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: false, // Keep false during development
+  perspective: "published",
+  stega: false,
+});
 
-interface SanityArticle {
-  slug: string;
-  updatedAt?: string;
-  publishedAt?: string;
-  _updatedAt?: string;
-}
-
-const config: IConfig = {
+/**
+ * @type {import('next-sitemap').IConfig}
+ */
+const config = {
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://harikaspices.com",
   generateRobotsTxt: true,
-  generateIndexSitemap: false, // Untuk performa yang lebih baik jika tidak terlalu banyak halaman
-
-  // SEO optimizations
+  generateIndexSitemap: false,
   changefreq: "weekly",
   priority: 0.7,
   autoLastmod: true,
@@ -36,7 +36,6 @@ const config: IConfig = {
         allow: "/",
         disallow: ["/admin/", "/api/", "/studio/", "/_next/", "/draft/"],
       },
-      // Khusus untuk search engine bots
       {
         userAgent: "Googlebot",
         allow: "/",
@@ -52,11 +51,11 @@ const config: IConfig = {
 
   // Generate dynamic paths
   additionalPaths: async () => {
-    const result: ISitemapField[] = [];
+    const result = [];
 
     try {
-      // Fetch products with better error handling and optimization
-      const products = await client.fetch<SanityProduct[]>(
+      // Fetch products
+      const products = await client.fetch(
         `*[_type == "product" && defined(slug.current)]{ 
           "slug": slug.current, 
           updatedAt,
@@ -71,15 +70,15 @@ const config: IConfig = {
 
           result.push({
             loc: `/products/${product.slug}`,
-            changefreq: "weekly" as ChangefreqValue,
+            changefreq: "weekly",
             priority: 0.8,
             lastmod,
           });
         }
       }
 
-      // Fetch articles with better error handling and optimization
-      const articles = await client.fetch<SanityArticle[]>(
+      // Fetch articles
+      const articles = await client.fetch(
         `*[_type == "article" && defined(slug.current)]{ 
           "slug": slug.current, 
           updatedAt,
@@ -94,7 +93,7 @@ const config: IConfig = {
 
           result.push({
             loc: `/articles/${article.slug}`,
-            changefreq: "daily" as ChangefreqValue,
+            changefreq: "daily",
             priority: 0.7,
             lastmod,
           });
@@ -104,7 +103,6 @@ const config: IConfig = {
       console.log(`Generated ${result.length} additional sitemap entries`);
     } catch (error) {
       console.error("Error generating additional paths for sitemap:", error);
-      // Don't throw error, just log it to prevent build failures
     }
 
     return result;
@@ -113,13 +111,13 @@ const config: IConfig = {
   // Transform function untuk customization halaman statis dan dinamis
   transform: async (config, path) => {
     // Static pages dengan prioritas berbeda
-    const staticPagesConfig: Record<string, { priority: number; changefreq: ChangefreqValue }> = {
-      "/": { priority: 1.0, changefreq: "daily" }, // Homepage
-      "/products": { priority: 0.9, changefreq: "daily" }, // Product listing
-      "/articles": { priority: 0.8, changefreq: "daily" }, // Articles listing
+    const staticPagesConfig = {
+      "/": { priority: 1.0, changefreq: "daily" },
+      "/products": { priority: 0.9, changefreq: "daily" },
+      "/articles": { priority: 0.8, changefreq: "daily" },
       "/about": { priority: 0.6, changefreq: "monthly" },
       "/contact": { priority: 0.5, changefreq: "monthly" },
-      "/quality-standards": { priority: 0.5, changefreq: "monthly" },
+      "/export-process": { priority: 0.5, changefreq: "monthly" },
       "/privacy-policy": { priority: 0.3, changefreq: "yearly" },
       "/terms-of-service": { priority: 0.3, changefreq: "yearly" },
     };
@@ -139,11 +137,7 @@ const config: IConfig = {
       try {
         const slug = path.replace("/products/", "");
         if (slug && slug !== "products") {
-          const productData = await client.fetch<{
-            updatedAt?: string;
-            publishedAt?: string;
-            _updatedAt?: string;
-          }>(
+          const productData = await client.fetch(
             `*[_type == "product" && slug.current == $slug][0]{
               updatedAt,
               publishedAt,
@@ -157,7 +151,7 @@ const config: IConfig = {
 
             return {
               loc: path,
-              changefreq: "weekly" as ChangefreqValue,
+              changefreq: "weekly",
               priority: 0.8,
               lastmod,
             };
@@ -173,11 +167,7 @@ const config: IConfig = {
       try {
         const slug = path.replace("/articles/", "");
         if (slug && slug !== "articles") {
-          const articleData = await client.fetch<{
-            updatedAt?: string;
-            publishedAt?: string;
-            _updatedAt?: string;
-          }>(
+          const articleData = await client.fetch(
             `*[_type == "article" && slug.current == $slug][0]{
               updatedAt,
               publishedAt,
@@ -191,7 +181,7 @@ const config: IConfig = {
 
             return {
               loc: path,
-              changefreq: "daily" as ChangefreqValue,
+              changefreq: "daily",
               priority: 0.7,
               lastmod,
             };
@@ -205,11 +195,11 @@ const config: IConfig = {
     // Default configuration untuk halaman lain
     return {
       loc: path,
-      changefreq: (config.changefreq as ChangefreqValue) || "weekly",
+      changefreq: config.changefreq || "weekly",
       priority: config.priority || 0.5,
       lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
     };
   },
 };
 
-export default config;
+module.exports = config;

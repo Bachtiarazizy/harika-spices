@@ -1,80 +1,85 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// File: app/articles/[slug]/page.tsx
-
 import { type SanityDocument } from "next-sanity";
-import { client, urlForImage } from "@/sanity/client";
+import { client } from "@/sanity/client";
 import { notFound } from "next/navigation";
 import ArticleDetail from "@/components/shared/ArticlesDetail";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 
 const ARTICLE_QUERY = `*[_type == "blogPost" && slug.current == $slug][0]{
-_id,
-title,
-slug,
-publishedAt,
-excerpt,
-body,
-mainImage{asset->{
-_id,
-url
-},
-alt,
-caption
-},
-author->{
-_id,
-name,
-bio,
-image{
-asset->
-{url}}},
-categories[]->{
-_id,
-title,
-slug
-},
-tags,
-language,
-featured,
-seo{
-title,
-description,
-keywords}}`;
+  _id,
+  title,
+  slug,
+  publishedAt,
+  excerpt,
+  body,
+  mainImage{
+    asset->{
+      _id,
+      url
+    },
+    alt,
+    caption
+  },
+  author->{
+    _id,
+    name
+  },
+  categories[]->{
+    _id,
+    title
+  },
+  tags
+}`;
 
-const RELATED_ARTICLES_QUERY = `*[_type == "blogPost" && slug.current != $slug && defined(slug.current) && count(categories[@._ref in $categoryIds]) > 0]|order(publishedAt desc)[0...3]{_id,title,slug,publishedAt,excerpt,mainImage{asset->{_id,url},alt},categories[]->{title,slug}}`;
+const RELATED_ARTICLES_QUERY = `*[_type == "blogPost" && slug.current != $slug][0...3]{
+  _id,
+  title,
+  slug,
+  publishedAt,
+  excerpt,
+  mainImage{
+    asset->{
+      _id,
+      url
+    },
+    alt
+  }
+}`;
 
-const options = { next: { revalidate: 30 } };
+// Fix untuk generateMetadata - params sekarang Promise
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  // Await params karena sekarang Promise
+  const resolvedParams = await params;
+  const post = await client.fetch<SanityDocument>(ARTICLE_QUERY, { slug: resolvedParams.slug });
 
-type Props = {
-  params: { slug: string };
-};
-
-export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const post = await client.fetch<SanityDocument>(ARTICLE_QUERY, { slug: params.slug }, options);
+  if (!post) {
+    return {
+      title: "Article Not Found",
+    };
+  }
 
   return {
     title: `${post.title} | Blog`,
-    description: post.excerpt,
+    description: post.excerpt || "",
     openGraph: {
       title: post.title,
-      description: post.excerpt,
-      images: post.mainImage ? [urlForImage(post.mainImage)?.url() || ""] : [],
-      type: "article",
-      publishedTime: post.publishedAt,
-      authors: [post.author?.name || "Anonymous"],
+      description: post.excerpt || "",
+      images: post.mainImage?.asset?.url ? [post.mainImage.asset.url] : [],
     },
-    keywords: post.category?.title ? [post.category.title] : [],
   };
 }
 
-export default async function ArticlePage({ params }: { params: { slug: string } }) {
-  const post = await client.fetch<SanityDocument>(ARTICLE_QUERY, { slug: params.slug }, options);
+// Fix untuk default export - params sekarang Promise
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  // Await params karena sekarang Promise
+  const resolvedParams = await params;
+
+  const post = await client.fetch<SanityDocument>(ARTICLE_QUERY, { slug: resolvedParams.slug });
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = (await client.fetch<SanityDocument[]>(RELATED_ARTICLES_QUERY, { slug: params.slug }, options)) || [];
+  const relatedPosts = await client.fetch<SanityDocument[]>(RELATED_ARTICLES_QUERY, { slug: resolvedParams.slug });
 
-  return <ArticleDetail post={post} relatedPosts={relatedPosts} />;
+  return <ArticleDetail post={post} relatedPosts={relatedPosts || []} />;
 }

@@ -3,6 +3,7 @@ import { type SanityDocument } from "next-sanity";
 import { client } from "@/sanity/client";
 import { notFound } from "next/navigation";
 import ProductDetailClient from "@/components/shared/ProductDetailClient";
+import { Metadata } from "next";
 
 // Query untuk mendapatkan single product berdasarkan slug
 const PRODUCT_QUERY = `*[
@@ -104,42 +105,11 @@ const RELATED_PRODUCTS_QUERY = `*[
   }
 }`;
 
-const options = { next: { revalidate: 30 } };
-
-interface ProductPageProps {
-  params: {
-    slug: string;
-  };
-}
-
-export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug } = await params;
-
-  // Fetch product data
-  const product = await client.fetch<SanityDocument>(PRODUCT_QUERY, { slug }, options);
-
-  if (!product) {
-    notFound();
-  }
-
-  // Fetch related products - FIXED query parameters
-  const relatedProducts = await client.fetch<SanityDocument[]>(
-    RELATED_PRODUCTS_QUERY,
-    {
-      slug,
-      categoryId: product.category?._id,
-    },
-    options
-  );
-
-  return <ProductDetailClient product={product} relatedProducts={relatedProducts} />;
-}
-
 // Generate metadata untuk SEO
-export async function generateMetadata({ params }: ProductPageProps) {
-  const { slug } = params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
 
-  const product = await client.fetch<SanityDocument>(PRODUCT_QUERY, { slug }, { next: { revalidate: 30 } });
+  const product = await client.fetch<SanityDocument>(PRODUCT_QUERY, { slug: resolvedParams.slug });
 
   if (!product) {
     return {
@@ -180,17 +150,18 @@ export async function generateMetadata({ params }: ProductPageProps) {
   };
 }
 
-// Generate static params untuk ISR
-export async function generateStaticParams() {
-  const products = await client.fetch<{ slug: { current: string } }[]>(
-    `*[_type == "product" && defined(slug.current)]{
-      "slug": slug
-    }`,
-    {},
-    { next: { revalidate: 3600 } } // revalidate every hour
-  );
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
 
-  return products.map((product) => ({
-    slug: product.slug.current,
-  }));
+  // Fetch product data
+  const product = await client.fetch<SanityDocument>(PRODUCT_QUERY, { slug: resolvedParams.slug });
+
+  if (!product) {
+    notFound();
+  }
+
+  // Fetch related products - FIXED query parameters
+  const relatedProducts = await client.fetch<SanityDocument[]>(RELATED_PRODUCTS_QUERY, { slug: resolvedParams.slug });
+
+  return <ProductDetailClient product={product} relatedProducts={relatedProducts} />;
 }
