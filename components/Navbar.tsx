@@ -2,11 +2,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Function to check if a link is active
+  const isActive = (path: string) => {
+    if (path === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(path);
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -14,11 +23,27 @@ export default function Navbar() {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
-    setIsDropdownOpen(false);
   };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const handleGetQuote = () => {
+    const subject = encodeURIComponent("Quote Request - Harika Spices");
+    const body = encodeURIComponent(`Dear Harika Spices Team,
+
+I am interested in getting a quote for your spice products. Please provide me with:
+
+- Product catalog and pricing
+- Minimum order quantities
+- Export terms and conditions
+- Delivery timeframes
+
+Please contact me at your earliest convenience.
+
+Best regards,
+[Your Name]
+[Your Company]
+[Your Contact Information]`);
+
+    window.location.href = `mailto:info@harikaspices.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -41,46 +66,32 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-8">
-            <Link href="/" className="text-sm font-medium hover:text-[#e5d4b1] transition-colors duration-200">
+            <Link href="/" className={`text-sm font-medium transition-colors duration-200 ${isActive("/") ? "text-[#e5d4b1] border-b-2 border-[#e5d4b1] pb-1" : "hover:text-[#e5d4b1]"}`}>
               Home
             </Link>
-            <Link href="/about" className="text-sm font-medium hover:text-[#e5d4b1] transition-colors duration-200">
+            <Link href="/about" className={`text-sm font-medium transition-colors duration-200 ${isActive("/about") ? "text-[#e5d4b1] border-b-2 border-[#e5d4b1] pb-1" : "hover:text-[#e5d4b1]"}`}>
               About Us
             </Link>
-            <Link href="/products" className="text-sm font-medium hover:text-[#e5d4b1] transition-colors duration-200">
+            <Link href="/products" className={`text-sm font-medium transition-colors duration-200 ${isActive("/products") ? "text-[#e5d4b1] border-b-2 border-[#e5d4b1] pb-1" : "hover:text-[#e5d4b1]"}`}>
               Our Products
             </Link>
-            <Link href="/quality-standards" className="text-sm font-medium hover:text-[#e5d4b1] transition-colors duration-200">
-              Quality Standards
+            <Link href="/export-process" className={`text-sm font-medium transition-colors duration-200 ${isActive("/export-process") ? "text-[#e5d4b1] border-b-2 border-[#e5d4b1] pb-1" : "hover:text-[#e5d4b1]"}`}>
+              Export Process
             </Link>
-
-            {/* Desktop Dropdown */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 text-sm font-medium hover:text-[#e5d4b1] transition-colors duration-200">
-                Sustainability
-                <ChevronDown size={16} className="transition-transform group-hover:rotate-180" />
-              </button>
-              <div className="absolute left-0 mt-2 w-48 bg-white text-black shadow-xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                <div className="py-2">
-                  <Link href="/sustainability/environment" className="block px-4 py-3 text-sm hover:bg-gray-50 hover:text-[#3A2A1A] transition-colors duration-200">
-                    Environment
-                  </Link>
-                  <Link href="/sustainability/community" className="block px-4 py-3 text-sm hover:bg-gray-50 hover:text-[#3A2A1A] transition-colors duration-200">
-                    Community
-                  </Link>
-                  <Link href="/sustainability/impact" className="block px-4 py-3 text-sm hover:bg-gray-50 hover:text-[#3A2A1A] transition-colors duration-200">
-                    Impact
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <Link href="/articles" className={`text-sm font-medium transition-colors duration-200 ${isActive("/articles") ? "text-[#e5d4b1] border-b-2 border-[#e5d4b1] pb-1" : "hover:text-[#e5d4b1]"}`}>
+              Articles
+            </Link>
+            <Link href="/contact" className={`text-sm font-medium transition-colors duration-200 ${isActive("/contact") ? "text-[#e5d4b1] border-b-2 border-[#e5d4b1] pb-1" : "hover:text-[#e5d4b1]"}`}>
+              Contact
+            </Link>
 
             {/* Desktop CTA Button */}
-            <Link href="/explore">
-              <button className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:bg-white hover:text-[#3A2A1A] transition-all duration-200 transform hover:scale-105">
-                Explore
-              </button>
-            </Link>
+            <button
+              onClick={handleGetQuote}
+              className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:bg-white hover:text-[#3A2A1A] transition-all duration-200 transform hover:scale-105"
+            >
+              Get Quote
+            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -91,54 +102,89 @@ export default function Navbar() {
           </div>
         </div>
 
+        {/* Mobile Menu Overlay */}
+        <div className={`lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 z-40 ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={closeMobileMenu} />
+
         {/* Mobile Menu */}
-        <div className={`lg:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-screen opacity-100 visible" : "max-h-0 opacity-0 invisible overflow-hidden"}`}>
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-[#2A1A0A]/95 backdrop-blur-sm rounded-b-lg shadow-lg">
-            <Link href="/" className="block px-3 py-2 text-base font-medium hover:bg-white/10 hover:text-[#e5d4b1] rounded-md transition-colors duration-200" onClick={closeMobileMenu}>
-              Home
-            </Link>
-            <Link href="/about" className="block px-3 py-2 text-base font-medium hover:bg-white/10 hover:text-[#e5d4b1] rounded-md transition-colors duration-200" onClick={closeMobileMenu}>
-              About Us
-            </Link>
-            <Link href="/products" className="block px-3 py-2 text-base font-medium hover:bg-white/10 hover:text-[#e5d4b1] rounded-md transition-colors duration-200" onClick={closeMobileMenu}>
-              Our Products
-            </Link>
-            <Link href="/quality-standards" className="block px-3 py-2 text-base font-medium hover:bg-white/10 hover:text-[#e5d4b1] rounded-md transition-colors duration-200" onClick={closeMobileMenu}>
-              Quality Standards
-            </Link>
+        <div className={`lg:hidden fixed top-0 right-0 h-full w-80 bg-[#2A1A0A]/95 backdrop-blur-md shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+          {/* Mobile Menu Header */}
+          <div className="flex items-center justify-between p-4 border-b border-white/20">
+            <Image src="/logo.png" alt="Company Logo" width={150} height={36} className="h-6 w-auto object-contain" priority />
+            <button onClick={closeMobileMenu} className="p-2 rounded-md hover:bg-white/10 transition-colors duration-200" aria-label="Close mobile menu">
+              <X size={20} />
+            </button>
+          </div>
 
-            {/* Mobile Dropdown */}
-            <div className="relative">
-              <button onClick={toggleDropdown} className="w-full flex items-center justify-between px-3 py-2 text-base font-medium hover:bg-white/10 hover:text-[#e5d4b1] rounded-md transition-colors duration-200">
-                Sustainability
-                <ChevronDown size={16} className={`transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
-
-              <div className={`transition-all duration-300 ease-in-out ${isDropdownOpen ? "max-h-48 opacity-100 visible" : "max-h-0 opacity-0 invisible overflow-hidden"}`}>
-                <div className="pl-6 space-y-1">
-                  <Link href="/sustainability/environment" className="block px-3 py-2 text-sm hover:bg-white/10 hover:text-[#e5d4b1] rounded-md transition-colors duration-200" onClick={closeMobileMenu}>
-                    Environment
-                  </Link>
-                  <Link href="/sustainability/community" className="block px-3 py-2 text-sm hover:bg-white/10 hover:text-[#e5d4b1] rounded-md transition-colors duration-200" onClick={closeMobileMenu}>
-                    Community
-                  </Link>
-                  <Link href="/sustainability/impact" className="block px-3 py-2 text-sm hover:bg-white/10 hover:text-[#e5d4b1] rounded-md transition-colors duration-200" onClick={closeMobileMenu}>
-                    Impact
-                  </Link>
-                </div>
-              </div>
+          {/* Mobile Menu Items */}
+          <div className="flex flex-col h-full">
+            <div className="flex-1 px-4 py-6 space-y-2">
+              <Link
+                href="/"
+                className={`block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200 border-b border-white/10 ${
+                  isActive("/") ? "bg-[#e5d4b1]/20 text-[#e5d4b1] border-[#e5d4b1]/30" : "hover:bg-white/10 hover:text-[#e5d4b1]"
+                }`}
+                onClick={closeMobileMenu}
+              >
+                Home
+              </Link>
+              <Link
+                href="/about"
+                className={`block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200 border-b border-white/10 ${
+                  isActive("/about") ? "bg-[#e5d4b1]/20 text-[#e5d4b1] border-[#e5d4b1]/30" : "hover:bg-white/10 hover:text-[#e5d4b1]"
+                }`}
+                onClick={closeMobileMenu}
+              >
+                About Us
+              </Link>
+              <Link
+                href="/products"
+                className={`block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200 border-b border-white/10 ${
+                  isActive("/products") ? "bg-[#e5d4b1]/20 text-[#e5d4b1] border-[#e5d4b1]/30" : "hover:bg-white/10 hover:text-[#e5d4b1]"
+                }`}
+                onClick={closeMobileMenu}
+              >
+                Our Products
+              </Link>
+              <Link
+                href="/export-process"
+                className={`block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200 border-b border-white/10 ${
+                  isActive("/export-process") ? "bg-[#e5d4b1]/20 text-[#e5d4b1] border-[#e5d4b1]/30" : "hover:bg-white/10 hover:text-[#e5d4b1]"
+                }`}
+                onClick={closeMobileMenu}
+              >
+                Export Process
+              </Link>
+              <Link
+                href="/articles"
+                className={`block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200 border-b border-white/10 ${
+                  isActive("/articles") ? "bg-[#e5d4b1]/20 text-[#e5d4b1] border-[#e5d4b1]/30" : "hover:bg-white/10 hover:text-[#e5d4b1]"
+                }`}
+                onClick={closeMobileMenu}
+              >
+                Articles
+              </Link>
+              <Link
+                href="/contact"
+                className={`block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200 border-b border-white/10 ${
+                  isActive("/contact") ? "bg-[#e5d4b1]/20 text-[#e5d4b1] border-[#e5d4b1]/30" : "hover:bg-white/10 hover:text-[#e5d4b1]"
+                }`}
+                onClick={closeMobileMenu}
+              >
+                Contact
+              </Link>
             </div>
 
             {/* Mobile CTA Button */}
-            <div className="pt-4">
-              <Link href="/explore">
-                <button
-                  className="w-full bg-white/10 backdrop-blur-sm border border-white/20 text-white px-4 py-3 rounded-lg font-medium shadow-md hover:bg-white hover:text-[#3A2A1A] transition-colors duration-200"
-                  onClick={closeMobileMenu}
-                >
-                  Explore
-                </button>
-              </Link>
+            <div className="p-4 border-t border-white/20">
+              <button
+                onClick={() => {
+                  handleGetQuote();
+                  closeMobileMenu();
+                }}
+                className="w-full bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-4 rounded-lg font-medium shadow-md hover:bg-white hover:text-[#3A2A1A] transition-all duration-200 text-center"
+              >
+                Get Quote
+              </button>
             </div>
           </div>
         </div>

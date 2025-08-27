@@ -7,23 +7,23 @@ export default function CardSection() {
   const cards = [
     {
       icon: <Globe className="w-8 h-8 text-[#94837b]" />,
-      title: "Global Export Excellence",
-      description: "Premium Indonesian spices exported to over 25 countries worldwide with certified quality standards.",
+      title: "Premium Quality",
+      description: "Carefully selected cloves, nutmeg, and pepper, ensuring authentic taste and consistency.",
     },
     {
       icon: <Leaf className="w-8 h-8 text-[#94837b]" />,
       title: "Sustainable Sourcing",
-      description: "Ethically sourced from local farmers with sustainable farming practices that preserve our environment.",
+      description: "Partnering with Indonesian farmers who practice responsible and eco-friendly cultivation.",
     },
     {
       icon: <Star className="w-8 h-8 text-[#94837b]" />,
-      title: "Premium Quality",
-      description: "Hand-selected cloves, nutmeg, and pepper that meet international quality standards and certifications.",
+      title: "Reliable Supply Chain",
+      description: "Consistent and timely deliveries to meet your business needs.",
     },
     {
       icon: <Shield className="w-8 h-8 text-[#94837b]" />,
-      title: "Quality Assurance",
-      description: "Rigorous quality control processes ensure consistent excellence in every batch of our exported spices.",
+      title: "Competitive Pricing",
+      description: "Fair and competitive pricing without compromising product excellence.",
     },
   ];
 
@@ -47,7 +47,7 @@ export default function CardSection() {
               </div>
 
               {/* Content */}
-              <h3 className="text-2xl font-semibold text-white mb-4">{card.title}</h3>
+              <h3 className="text-xl font-semibold text-white mb-4">{card.title}</h3>
               <p className="text-gray-300 text-medium leading-relaxed">{card.description}</p>
             </motion.div>
           ))}

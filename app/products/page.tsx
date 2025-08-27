@@ -73,17 +73,17 @@ export default async function ProductsPage() {
 
 // Generate metadata untuk SEO
 export const metadata = {
-  title: "Premium Indonesian Spices & Products | Harika Spices",
+  title: "Premium Indonesian Spices & Products",
   description: "Discover our premium collection of Indonesian spices and agricultural products. From authentic spices to specialty items, sourced directly from Indonesian farmers.",
-  keywords: "Indonesian spices, premium spices, spice export, agricultural products, Indonesia, spice supplier",
+  keywords: "Indonesian spices exporter, premium spices, spice export, agricultural products, Indonesia spice supplier",
   openGraph: {
-    title: "Premium Indonesian Spices & Products | Harika Spices",
+    title: "Premium Indonesian Spices & Products",
     description: "Discover our premium collection of Indonesian spices and agricultural products. From authentic spices to specialty items, sourced directly from Indonesian farmers.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Premium Indonesian Spices & Products | Harika Spices",
+    title: "Premium Indonesian Spices & Products",
     description: "Discover our premium collection of Indonesian spices and agricultural products.",
   },
 };

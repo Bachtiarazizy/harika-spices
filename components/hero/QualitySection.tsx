@@ -7,9 +7,10 @@ export default function QualitySection() {
       <div className="container mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 text-lg md:text-xl items-center">
         {/* Left Content */}
         <div>
-          <h2 className="text-3xl md:text-4xl font-calistoga text-gray-900 leading-tight mb-6">Delivering Authentic Spices with Unmatched Quality and Trust for Global Partners</h2>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-calistoga text-gray-900 leading-tight mb-6">Harika Spices – Your Trusted Indonesian Partner</h2>
           <p className="text-gray-700  mb-8">
-            At Harika Spices, we are committed to sourcing and exporting the finest spices from Indonesia. Our dedication to quality and authenticity ensures that every product meets the highest standards for our global clients.
+            We are dedicated to building long-term partnerships with businesses worldwide by delivering premium spices directly from Indonesia’s fertile lands. With every shipment, we ensure transparency, traceability, and a commitment to
+            sustainability.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

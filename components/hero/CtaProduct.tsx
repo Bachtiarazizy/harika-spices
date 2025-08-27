@@ -15,13 +15,12 @@ export default function CtaProduct() {
 
         <motion.div className="lg:w-1/2 max-w-lg text-left w-full" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }}>
           <p className="text-lg md:text-xl font-raleway text-gray-200 mb-4">
-            Dive into the rich flavors and quality of our spices. sourced directly from Indonesia&apos;s finest farms. Whether you&apos;re looking for cloves, nutmeg, or pepper. we ensure premium products that elevate your culinary
-            creations.
+            Dive into the authentic flavors of Indonesia. Whether you’re sourcing cloves, nutmeg, or pepper, our products are hand-selected to meet the highest standards of international trade.
           </p>
 
           <div className="flex flex-row gap-4 justify-start">
             <Link href="/products" className="inline-block">
-              <button className="bg-white border border-white py-2 px-4 text-black rounded-md font-medium tracking-wide">Explore</button>
+              <button className="bg-white border border-white py-2 px-4 text-black rounded-md font-medium tracking-wide">Explore Products</button>
             </Link>
             <Link href="/about" className="inline-block">
               <button className="border border-white py-2 px-4 text-white rounded-md font-medium tracking-wide">Learn More</button>

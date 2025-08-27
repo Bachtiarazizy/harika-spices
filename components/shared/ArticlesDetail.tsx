@@ -59,32 +59,33 @@ const calculateReadingTime = (body: any[]) => {
   return Math.max(1, readingTime);
 };
 
-// Portable Text components for rich content
+// Modern Portable Text components with professional styling
 const portableTextComponents = {
   types: {
     image: ({ value }: any) => (
-      <div className="my-8 rounded-2xl overflow-hidden shadow-lg">
+      <figure className="my-12 rounded-2xl overflow-hidden shadow-sm border border-gray-100">
         <Image src={value.asset?.url} alt={value.alt || ""} width={800} height={400} className="w-full h-auto" />
         {value.caption && (
-          <div className="bg-gray-50 px-6 py-4">
-            <p className="text-sm text-gray-600 italic text-center">{value.caption}</p>
-          </div>
+          <figcaption className="bg-gray-50 px-8 py-4 border-t border-gray-100">
+            <p className="text-sm text-gray-600 italic text-center leading-relaxed">{value.caption}</p>
+          </figcaption>
         )}
-      </div>
+      </figure>
     ),
   },
   marks: {
     link: ({ children, value }: any) => (
-      <a href={value.href} target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:text-amber-700 font-semibold underline decoration-amber-300 hover:decoration-amber-500 transition-colors">
+      <a href={value.href} target="_blank" rel="noopener noreferrer" className="text-[#392E20] hover:text-[#392E20]/70 font-medium underline decoration-blue-200 hover:decoration-blue-300 decoration-2 underline-offset-2 transition-all">
         {children}
       </a>
     ),
+    strong: ({ children }: any) => <strong className="font-semibold text-gray-900">{children}</strong>,
   },
   block: {
     h2: ({ children, value }: any) => {
       const id = value.children?.[0]?.text?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "heading";
       return (
-        <h2 id={id} className="text-3xl font-calistoga text-[#392E20] mt-12 mb-6 leading-tight">
+        <h2 id={id} className="text-3xl font-bold text-gray-900 mt-16 mb-6 leading-tight tracking-tight">
           {children}
         </h2>
       );
@@ -92,7 +93,7 @@ const portableTextComponents = {
     h3: ({ children, value }: any) => {
       const id = value.children?.[0]?.text?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "heading";
       return (
-        <h3 id={id} className="text-2xl font-calistoga text-[#392E20] mt-10 mb-4 leading-tight">
+        <h3 id={id} className="text-2xl font-semibold text-gray-900 mt-12 mb-5 leading-tight tracking-tight">
           {children}
         </h3>
       );
@@ -100,21 +101,29 @@ const portableTextComponents = {
     h4: ({ children, value }: any) => {
       const id = value.children?.[0]?.text?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "heading";
       return (
-        <h4 id={id} className="text-xl font-semibold text-[#392E20] mt-8 mb-3">
+        <h4 id={id} className="text-xl font-semibold text-gray-800 mt-10 mb-4 leading-tight">
           {children}
         </h4>
       );
     },
-    normal: ({ children }: any) => <p className="text-gray-700 text-lg leading-relaxed mb-6">{children}</p>,
+    normal: ({ children }: any) => <p className="text-gray-700 text-lg leading-8 mb-6 tracking-normal">{children}</p>,
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-amber-500 pl-6 py-4 my-8 bg-amber-50 rounded-r-lg">
-        <div className="text-gray-800 text-lg italic leading-relaxed">{children}</div>
+      <blockquote className="border-l-4 border-[#392E20] pl-8 py-6 my-10 bg-[#392E20]/50 rounded-r-xl">
+        <div className="text-gray-800 text-lg leading-8 italic font-medium">{children}</div>
       </blockquote>
     ),
   },
   list: {
-    bullet: ({ children }: any) => <ul className="list-disc list-inside space-y-3 my-6 text-gray-700 text-lg">{children}</ul>,
-    number: ({ children }: any) => <ol className="list-decimal list-inside space-y-3 my-6 text-gray-700 text-lg">{children}</ol>,
+    bullet: ({ children }: any) => <ul className="list-none space-y-3 my-8 text-gray-700 text-lg">{children}</ul>,
+    number: ({ children }: any) => <ol className="list-decimal list-inside space-y-3 my-8 text-gray-700 text-lg ml-4">{children}</ol>,
+  },
+  listItem: {
+    bullet: ({ children }: any) => (
+      <li className="flex items-start gap-3">
+        <span className="w-1.5 h-1.5 bg-[#392E20] rounded-full mt-3 flex-shrink-0"></span>
+        <span>{children}</span>
+      </li>
+    ),
   },
 };
 
@@ -134,7 +143,6 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
     twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`,
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
-    whatsapp: `https://wa.me/?text=${encodeURIComponent(shareTitle + " " + shareUrl)}`,
     instagram: `https://www.instagram.com/`,
   };
 
@@ -151,20 +159,29 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
   return (
     <div className="min-h-screen bg-white">
       {/* Article Header */}
-      <motion.header className="bg-[#392E20] py-16 px-6 md:px-16 relative overflow-hidden" initial="hidden" animate="visible" variants={staggerContainer}>
-        <div className="max-w-4xl relative z-10">
+      <motion.header className="bg-[#392E20] py-20 px-6 md:px-16 relative overflow-hidden" initial="hidden" animate="visible" variants={staggerContainer}>
+        <div className="max-w-5xl relative z-10">
           <motion.div>
+            {/* Breadcrumb */}
+            <nav className="mb-8">
+              <Link href="/articles" className="text-gray-300 hover:text-white text-sm font-medium flex items-center gap-2 transition-colors">
+                <ArrowLeft size={16} />
+                Back to Articles
+              </Link>
+            </nav>
+
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-calistoga mt-12 text-white mb-6 leading-tight">{post.title}</h1>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-calistoga text-white mb-8 leading-tight tracking-tight">{post.title}</h1>
 
             {/* Excerpt */}
-            {post.excerpt && <p className="text-xl text-amber-100 leading-relaxed mb-8 max-w-3xl">{post.excerpt}</p>}
+            {post.excerpt && <p className="text-xl md:text-2xl text-gray-200 leading-relaxed mb-12 max-w-4xl font-light">{post.excerpt}</p>}
 
             {/* Article Meta */}
-            <div className="flex flex-wrap items-center gap-6 text-amber-200">
-              {/* Date */}
-              <div className="flex items-center gap-2">
-                <Calendar size={16} />
+            <div className="flex flex-wrap items-center gap-8 text-gray-300">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+                  <Calendar size={16} />
+                </div>
                 <span className="text-sm font-medium">
                   {new Date(post.publishedAt).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -174,9 +191,10 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
                 </span>
               </div>
 
-              {/* Reading Time */}
-              <div className="flex items-center gap-2">
-                <Clock size={16} />
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+                  <Clock size={16} />
+                </div>
                 <span className="text-sm font-medium">{readingTime} min read</span>
               </div>
             </div>
@@ -185,27 +203,30 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
       </motion.header>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
+        <div className="grid lg:grid-cols-4 gap-16">
           {/* Article Content */}
           <motion.article className="lg:col-span-3" initial="hidden" animate="visible">
             {/* Featured Image */}
             {post.mainImage?.asset?.url && (
-              <div className="mb-12 rounded-3xl overflow-hidden shadow-xl">
+              <div className="mb-16 rounded-3xl overflow-hidden shadow-lg border border-gray-100">
                 <Image src={post.mainImage.asset.url} alt={post.mainImage.alt || post.title} width={1200} height={600} className="w-full h-auto" priority />
               </div>
             )}
 
             {/* Article Body */}
-            <div className="prose prose-lg max-w-none">{post.body && <PortableText value={post.body} components={portableTextComponents} />}</div>
+            <div className="prose prose-lg prose-gray max-w-none">{post.body && <PortableText value={post.body} components={portableTextComponents} />}</div>
 
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
-              <div className="mt-12 pt-8 border-t border-gray-200">
-                <h3 className="text-lg font-semibold text-[#392E20] mb-4">Tags</h3>
-                <div className="flex flex-wrap gap-2">
+              <div className="mt-16 pt-12 border-t border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+                  <Tag size={18} className="text-gray-600" />
+                  Tagged Topics
+                </h3>
+                <div className="flex flex-wrap gap-3">
                   {post.tags.map((tag: string, index: number) => (
-                    <span key={index} className="px-3 py-1 bg-gray-100 hover:bg-amber-100 text-gray-700 hover:text-amber-800 text-sm rounded-lg transition-colors cursor-pointer">
+                    <span key={index} className="px-4 py-2 bg-gray-100 hover:bg-blue-50 text-gray-700 hover:text-blue-700 text-sm font-medium rounded-full transition-all cursor-pointer border border-transparent hover:border-blue-200">
                       #{tag}
                     </span>
                   ))}
@@ -214,48 +235,49 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
             )}
 
             {/* Share Section */}
-            <div className="mt-12 pt-8 border-t border-gray-200">
-              <h3 className="text-lg font-semibold text-[#392E20] mb-4 flex items-center gap-2">
-                <Share2 size={20} />
+            <div className="mt-16 pt-12 border-t border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+                <Share2 size={18} className="text-gray-600" />
                 Share this article
               </h3>
-              <div className="flex gap-3">
-                <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" title="Share on Facebook">
-                  <Facebook size={18} />
-                </a>
-                <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-10 h-10 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors" title="Share on Twitter">
-                  <Twitter size={18} />
-                </a>
-                <a href={shareLinks.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-10 h-10 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors" title="Share on LinkedIn">
-                  <Linkedin size={18} />
-                </a>
+              <div className="flex flex-wrap gap-3">
                 <a
-                  href={shareLinks.whatsapp}
+                  href={shareLinks.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-                  title="Share on WhatsApp"
+                  className="flex items-center justify-center w-12 h-12 bg-[#392E20] hover:bg-blue-700 text-white rounded-xl transition-all hover:scale-105 shadow-sm"
+                  title="Share on Facebook"
                 >
-                  <MessageCircle size={18} />
+                  <Facebook size={20} />
                 </a>
                 <a
-                  href={shareLinks.instagram}
+                  href={shareLinks.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors"
-                  title="Share on Instagram"
+                  className="flex items-center justify-center w-12 h-12 bg-sky-500 hover:bg-sky-600 text-white rounded-xl transition-all hover:scale-105 shadow-sm"
+                  title="Share on Twitter"
                 >
-                  <Instagram size={18} />
+                  <Twitter size={20} />
                 </a>
+                <a
+                  href={shareLinks.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-12 h-12 bg-blue-700 hover:bg-blue-800 text-white rounded-xl transition-all hover:scale-105 shadow-sm"
+                  title="Share on LinkedIn"
+                >
+                  <Linkedin size={20} />
+                </a>
+
                 <button
                   onClick={copyToClipboard}
-                  className={`flex items-center justify-center w-10 h-10 ${copied ? "bg-green-600" : "bg-gray-600"} text-white rounded-lg hover:bg-gray-700 transition-colors`}
+                  className={`flex items-center justify-center w-12 h-12 ${copied ? "bg-green-600" : "bg-gray-600 hover:bg-gray-700"} text-white rounded-xl transition-all hover:scale-105 shadow-sm`}
                   title={copied ? "Link copied!" : "Copy link"}
                 >
-                  <Copy size={18} />
+                  <Copy size={20} />
                 </button>
               </div>
-              {copied && <p className="text-green-600 text-sm mt-2">Link copied to clipboard!</p>}
+              {copied && <p className="text-green-600 text-sm mt-3 font-medium">Link copied to clipboard!</p>}
             </div>
           </motion.article>
 
@@ -263,30 +285,29 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
           <motion.aside className="lg:col-span-1" initial="hidden" animate="visible">
             {/* Table of Contents */}
             {tableOfContents.length > 0 && (
-              <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-8">
-                <h3 className="font-calistoga text-[#392E20] text-lg mb-4 flex items-center gap-2">
-                  <BookOpen size={20} />
-                  Table of Contents
-                </h3>
-                <ul className="space-y-2 text-sm">
-                  {tableOfContents.map((heading, index) => (
-                    <li key={index}>
-                      <a href={`#${heading.id}`} className={`text-gray-600 hover:text-amber-600 transition-colors block ${heading.level === "h3" ? "ml-4" : heading.level === "h4" ? "ml-8" : ""}`}>
-                        {heading.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 mb-8">
+                <h3 className="font-bold text-gray-900 text-lg mb-6">Table of Contents</h3>
+                <nav>
+                  <ul className="space-y-3 text-sm">
+                    {tableOfContents.map((heading, index) => (
+                      <li key={index}>
+                        <a href={`#${heading.id}`} className={`text-gray-600 hover:text-[#392E20] transition-colors block py-1 font-medium hover:font-semibold`}>
+                          {heading.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
               </div>
             )}
 
-            {/* Quick Stats */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-8">
-              <h3 className="font-calistoga text-[#392E20] text-lg mb-4">Quick Stats</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm">Published</span>
-                  <span className="text-[#392E20] font-semibold text-sm">
+            {/* Article Statistics */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+              <h3 className="font-bold text-gray-900 text-lg mb-6">Article Info</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
+                  <span className="text-gray-600 text-sm font-medium">Published</span>
+                  <span className="text-gray-900 font-semibold text-sm">
                     {new Date(post.publishedAt).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -294,20 +315,20 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
                     })}
                   </span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm">Reading time</span>
-                  <span className="text-[#392E20] font-semibold text-sm">{readingTime} min</span>
+                <div className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
+                  <span className="text-gray-600 text-sm font-medium">Reading time</span>
+                  <span className="text-gray-900 font-semibold text-sm">{readingTime} min</span>
                 </div>
                 {post.categories && post.categories.length > 0 && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-600 text-sm">Categories</span>
-                    <span className="text-[#392E20] font-semibold text-sm">{post.categories.length}</span>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
+                    <span className="text-gray-600 text-sm font-medium">Categories</span>
+                    <span className="text-gray-900 font-semibold text-sm">{post.categories.length}</span>
                   </div>
                 )}
                 {post.tags && post.tags.length > 0 && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-600 text-sm">Tags</span>
-                    <span className="text-[#392E20] font-semibold text-sm">{post.tags.length}</span>
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-gray-600 text-sm font-medium">Topics</span>
+                    <span className="text-gray-900 font-semibold text-sm">{post.tags.length}</span>
                   </div>
                 )}
               </div>
@@ -318,19 +339,19 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
 
       {/* Related Articles */}
       {relatedPosts.length > 0 && (
-        <motion.section className="bg-gray-50 py-20 px-6 md:px-16" initial="hidden" animate="visible" variants={staggerContainer}>
+        <motion.section className="bg-gray-50 py-24 px-6 md:px-16" initial="hidden" animate="visible" variants={staggerContainer}>
           <div className="max-w-7xl mx-auto">
-            <motion.div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-calistoga text-[#392E20] mb-4">Related Articles</h2>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto">Explore more insights and analysis from our industry experts</p>
+            <motion.div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 tracking-tight">Continue Reading</h2>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto font-light">Explore more insights and industry analysis from our experts</p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
               {relatedPosts.slice(0, 3).map((relatedPost: SanityDocument, index: number) => (
-                <motion.article key={relatedPost._id} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+                <motion.article key={relatedPost._id} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
                   <Link href={`/articles/${relatedPost.slug?.current}`}>
                     {relatedPost.mainImage?.asset?.url && (
-                      <div className="h-48 overflow-hidden">
+                      <div className="h-52 overflow-hidden">
                         <Image
                           src={relatedPost.mainImage.asset.url}
                           alt={relatedPost.mainImage.alt || relatedPost.title}
@@ -341,30 +362,20 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
                       </div>
                     )}
 
-                    <div className="p-6">
-                      {/* Categories */}
-                      {relatedPost.categories && relatedPost.categories.length > 0 && (
-                        <div className="flex gap-2 mb-3">
-                          {relatedPost.categories.slice(0, 2).map((category: any) => (
-                            <span key={category._id} className="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded-lg font-medium">
-                              {category.title}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+                    <div className="p-8">
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-[#392E20] transition-colors mb-4 leading-tight line-clamp-2">{relatedPost.title}</h3>
 
-                      <h3 className="text-xl font-calistoga text-[#392E20] group-hover:text-amber-700 transition-colors mb-3 leading-tight line-clamp-2">{relatedPost.title}</h3>
+                      {relatedPost.excerpt && <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-6 font-light">{relatedPost.excerpt}</p>}
 
-                      {relatedPost.excerpt && <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4">{relatedPost.excerpt}</p>}
-
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <time className="text-xs text-gray-500">
+                      <div className="flex items-center justify-between pt-6 border-t border-gray-100">
+                        <time className="text-xs text-gray-500 font-medium">
                           {new Date(relatedPost.publishedAt).toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
+                            year: "numeric",
                           })}
                         </time>
-                        <ArrowRight size={16} className="text-amber-600 group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight size={16} className="text-[#392E20] group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
                   </Link>
@@ -374,44 +385,6 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
           </div>
         </motion.section>
       )}
-
-      {/* CTA Section - Following About Page Style */}
-      <section className="bg-gray-100 py-20 font-raleway">
-        <div className="container mx-auto px-6 lg:px-10">
-          <div className="bg-white rounded-2xl p-8 md:p-12 text-center shadow-lg">
-            <h3 className="text-2xl md:text-3xl font-calistoga text-gray-900 mb-4">Get More Industry Insights</h3>
-            <p className="text-gray-700 mb-8 max-w-2xl mx-auto">Subscribe to receive the latest articles, market analysis, and industry updates from Harika Spices experts delivered directly to your inbox.</p>
-
-            {/* Newsletter Form */}
-            <div className="max-w-lg mx-auto mb-8">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <input
-                  type="email"
-                  placeholder="Enter your professional email"
-                  className="flex-1 px-6 py-4 border border-gray-300 rounded-md font-medium placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                />
-                <button className="bg-gray-900 text-white px-8 py-4 rounded-md font-medium hover:bg-gray-800 transition-colors whitespace-nowrap">Subscribe Now</button>
-              </div>
-            </div>
-
-            {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center gap-6 pt-6 border-t border-gray-200">
-              <div className="flex items-center gap-2 text-gray-600">
-                <User size={16} />
-                <span className="text-sm font-medium">5,000+ Subscribers</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-600">
-                <Clock size={16} />
-                <span className="text-sm font-medium">Weekly Updates</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-600">
-                <Tag size={16} />
-                <span className="text-sm font-medium">Industry Exclusive</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

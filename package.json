@@ -13,6 +13,8 @@
     "@emailjs/browser": "^4.4.1",
     "@formatjs/intl-localematcher": "^0.6.1",
     "@gsap/react": "^2.1.2",
+    "@portabletext/react": "^4.0.1",
+    "@portabletext/types": "^2.0.15",
     "@sanity/image-url": "^1.1.0",
     "@studio-freight/lenis": "^1.0.42",
     "@types/gsap": "^3.0.0",

@@ -38,8 +38,8 @@ export default async function BlogSection() {
         posts={blogPosts}
         showAllLink={true}
         maxPosts={3}
-        sectionTitle="Latest From Our Experts"
-        sectionSubtitle="Stay informed with the latest market trends, industry analysis, and expert insights from Indonesia's leading spice exporters."
+        sectionTitle="Insights & Market Updates"
+        sectionSubtitle="Stay informed with the latest spice market trends, industry insights, and updates from Indonesia’s spice sector."
       />
     );
   } catch (error) {

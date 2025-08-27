@@ -28,18 +28,18 @@ export default function HeroSection() {
         <div className="mx-auto flex flex-col lg:flex-row items-start lg:items-end lg:justify-between lg:gap-16">
           {/* Title */}
           <motion.div className="lg:w-1/2 text-left w-full" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }}>
-            <h1 className="text-4xl font-calistoga md:text-5xl lg:text-6xl text-white leading-tight">Rooted in Indonesia&apos;s Spice Heritage</h1>
+            <h1 className="text-4xl font-calistoga md:text-5xl lg:text-6xl text-white leading-tight">Premium Indonesian Spices for Global Trade</h1>
           </motion.div>
 
           <motion.div className="lg:w-1/2 max-w-lg text-left w-full" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }}>
-            <p className="text-lg md:text-xl font-raleway text-gray-200 mb-4">Discover the finest spices Indonesia has to offer. Our premium B2B exports include cloves, nutmeg, and pepper, sourced ethically and sustainably.</p>
+            <p className="text-lg md:text-xl font-raleway text-gray-200 mb-4">Sourced ethically and sustainably from Indonesia’s finest farms cloves, nutmeg, and pepper delivered with quality you can trust.</p>
 
             <div className="flex flex-row gap-4 justify-start">
               <Link href="/products" className="inline-block">
-                <button className="bg-white border border-white py-2 px-4 text-black rounded-md font-medium tracking-wide hover:bg-gray-100 transition-colors duration-200">Explore</button>
+                <button className="bg-white border border-white py-2 px-4 text-black rounded-md font-medium tracking-wide hover:bg-gray-100 transition-colors duration-200">Explore Products</button>
               </Link>
-              <Link href="/about" className="inline-block">
-                <button className="border border-white py-2 px-4 text-white rounded-md font-medium tracking-wide hover:bg-white hover:text-black transition-colors duration-200">Learn More</button>
+              <Link href="/contact" className="inline-block">
+                <button className="border border-white py-2 px-4 text-white rounded-md font-medium tracking-wide hover:bg-white hover:text-black transition-colors duration-200">Request a Quote</button>
               </Link>
             </div>
           </motion.div>

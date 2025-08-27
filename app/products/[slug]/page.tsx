@@ -78,7 +78,7 @@ const PRODUCT_QUERY = `*[
   }
 }`;
 
-// Query untuk mendapatkan related products
+// Query untuk mendapatkan related products - FIXED
 const RELATED_PRODUCTS_QUERY = `*[
   _type == "product" 
   && slug.current != $slug
@@ -89,7 +89,7 @@ const RELATED_PRODUCTS_QUERY = `*[
   slug,
   scientificName,
   shortDescription,
-  images[0]{
+  images[]{
     asset->{
       _id,
       url
@@ -122,8 +122,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  // Fetch related products
-  const relatedProducts = await client.fetch<SanityDocument[]>(RELATED_PRODUCTS_QUERY, { slug, categoryId: product.category._id }, options);
+  // Fetch related products - FIXED query parameters
+  const relatedProducts = await client.fetch<SanityDocument[]>(
+    RELATED_PRODUCTS_QUERY,
+    {
+      slug,
+      categoryId: product.category?._id,
+    },
+    options
+  );
 
   return <ProductDetailClient product={product} relatedProducts={relatedProducts} />;
 }
@@ -141,7 +148,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
     };
   }
 
-  const seoTitle = product.seo?.title || `${product.name} | Harika Spices`;
+  const seoTitle = product.seo?.title || `${product.name} `;
   const seoDescription = product.seo?.description || product.shortDescription || `Premium ${product.name} from Indonesia. ${product.scientificName ? `Scientific name: ${product.scientificName}.` : ""} High quality spice for export.`;
   const seoKeywords = product.seo?.keywords || `${product.name}, Indonesian spices, ${product.scientificName}, spice export, premium spices`;
 
