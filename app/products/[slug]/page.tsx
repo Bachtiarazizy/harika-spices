@@ -73,13 +73,22 @@ const PRODUCT_QUERY = `*[
   featured,
   newProduct,
   seo{
-    title,
-    description,
-    keywords
+    metaTitle,
+    metaDescription,
+    keywords,
+    ogImage{
+      asset->{
+        _id,
+        url
+      },
+      alt
+    },
+    noIndex,
+    canonicalUrl
   }
 }`;
 
-// Query untuk mendapatkan related products - FIXED
+// Query untuk mendapatkan related products
 const RELATED_PRODUCTS_QUERY = `*[
   _type == "product" 
   && slug.current != $slug
@@ -109,7 +118,9 @@ const RELATED_PRODUCTS_QUERY = `*[
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
 
-  const product = await client.fetch<SanityDocument>(PRODUCT_QUERY, { slug: resolvedParams.slug });
+  const product = await client.fetch<SanityDocument>(PRODUCT_QUERY, {
+    slug: resolvedParams.slug,
+  });
 
   if (!product) {
     return {
@@ -118,25 +129,41 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
-  const seoTitle = product.seo?.title || `${product.name} `;
-  const seoDescription = product.seo?.description || product.shortDescription || `Premium ${product.name} from Indonesia. ${product.scientificName ? `Scientific name: ${product.scientificName}.` : ""} High quality spice for export.`;
-  const seoKeywords = product.seo?.keywords || `${product.name}, Indonesian spices, ${product.scientificName}, spice export, premium spices`;
+  // Prioritas SEO: gunakan data dari schema SEO terlebih dahulu
+  const seoTitle = product.seo?.metaTitle || `${product.name} - Premium Indonesian Spices | Harika Spices`;
 
-  return {
+  const seoDescription = product.seo?.metaDescription || product.shortDescription || `Premium ${product.name} from Indonesia. ${product.scientificName ? `Scientific name: ${product.scientificName}.` : ""} High quality spice for export.`;
+
+  // Convert keywords array to string untuk meta keywords
+  const seoKeywords = product.seo?.keywords?.join(", ") || `${product.name}, Indonesian spices, ${product.scientificName || ""}, spice export, premium spices`.replace(", ,", ",");
+
+  // Gunakan OG Image dari SEO schema jika ada, fallback ke product images
+  const ogImageUrl = product.seo?.ogImage?.asset?.url || product.images?.[0]?.asset?.url;
+  const ogImageAlt = product.seo?.ogImage?.alt || product.images?.[0]?.alt || product.name;
+
+  const metadata: Metadata = {
     title: seoTitle,
     description: seoDescription,
     keywords: seoKeywords,
+    // Respect noIndex setting
+    robots: product.seo?.noIndex ? "noindex, nofollow" : "index, follow",
+    // Use canonical URL if specified
+    alternates: product.seo?.canonicalUrl
+      ? {
+          canonical: product.seo.canonicalUrl,
+        }
+      : undefined,
     openGraph: {
       title: seoTitle,
       description: seoDescription,
       type: "website",
-      images: product.images?.[0]?.asset?.url
+      images: ogImageUrl
         ? [
             {
-              url: product.images[0].asset.url,
-              width: 800,
-              height: 600,
-              alt: product.images[0].alt || product.name,
+              url: ogImageUrl,
+              width: 1200,
+              height: 630,
+              alt: ogImageAlt,
             },
           ]
         : [],
@@ -145,22 +172,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       card: "summary_large_image",
       title: seoTitle,
       description: seoDescription,
-      images: product.images?.[0]?.asset?.url ? [product.images[0].asset.url] : [],
+      images: ogImageUrl ? [ogImageUrl] : [],
     },
   };
+
+  return metadata;
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
 
   // Fetch product data
-  const product = await client.fetch<SanityDocument>(PRODUCT_QUERY, { slug: resolvedParams.slug });
+  const product = await client.fetch<SanityDocument>(PRODUCT_QUERY, {
+    slug: resolvedParams.slug,
+  });
 
   if (!product) {
     notFound();
   }
 
-  // Fetch related products - FIXED: pass correct parameter
+  // Fetch related products
   const relatedProducts = await client.fetch<SanityDocument[]>(RELATED_PRODUCTS_QUERY, {
     slug: resolvedParams.slug,
     categoryId: product.category?._id,

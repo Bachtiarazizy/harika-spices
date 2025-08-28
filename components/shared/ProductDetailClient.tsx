@@ -11,15 +11,6 @@ import { type SanityDocument } from "next-sanity";
 import { Star, MapPin, Package, CheckCircle, AlertCircle, Clock, Calendar, Leaf, Award, Shield, Heart, Share2, Mail, Droplets, Clock3, ShoppingCart, Info, Send, X, ArrowRight, Phone, Building, User } from "lucide-react";
 import { PortableText } from "@portabletext/react";
 
-// const fadeInUp = {
-//   hidden: { opacity: 0, y: 30 },
-//   visible: {
-//     opacity: 1,
-//     y: 0,
-//     transition: { duration: 0.6, ease: "easeInOut" },
-//   },
-// };
-
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
@@ -190,6 +181,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
 
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -225,18 +219,36 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
         });
         setShowInquiryModal(false);
 
-        // Show success message
-        alert("Thank you for your inquiry! We'll get back to you within 24 hours. A confirmation email has been sent to your address.");
+        // Show success popup
+        setPopupMessage("Thank you for your inquiry! We'll get back to you within 24 hours. A confirmation email has been sent to your address.");
+        setShowSuccessPopup(true);
+
+        // Auto close success popup after 5 seconds
+        setTimeout(() => {
+          setShowSuccessPopup(false);
+        }, 5000);
       } else {
-        setSubmitError(data.error || "Failed to send inquiry");
+        setPopupMessage(data.error || "Failed to send inquiry");
+        setShowErrorPopup(true);
+
+        // Auto close error popup after 5 seconds
+        setTimeout(() => {
+          setShowErrorPopup(false);
+        }, 5000);
       }
     } catch (error) {
-      console.error("Error submitting inquiry:", error);
-      setSubmitError("Network error. Please try again later.");
+      setPopupMessage("Network error. Please try again later.");
+      setShowErrorPopup(true);
+
+      // Auto close error popup after 5 seconds
+      setTimeout(() => {
+        setShowErrorPopup(false);
+      }, 5000);
     } finally {
       setIsSubmitting(false);
     }
   };
+
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -264,9 +276,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Breadcrumb */}
-      <motion.div className="bg-[#392E20] backdrop-blur-sm py-10 px-6 md:px-16  " initial="hidden" animate="visible"></motion.div>
+      <motion.div className="bg-[#392E20] backdrop-blur-sm py-10 px-6 md:px-16" initial="hidden" animate="visible"></motion.div>
       {/* Breadcrumb */}
-      <motion.div className="py-10 px-6 md:px-16  border-b border-slate-200" initial="hidden" animate="visible">
+      <motion.div className="pt-10 px-6 md:px-16" initial="hidden" animate="visible">
         <div className="max-w-7xl mx-auto">
           <nav className="flex items-center space-x-2 text-sm">
             <Link href="/" className="text-amber-600 hover:text-amber-700 transition-colors">
@@ -283,21 +295,25 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
       </motion.div>
 
       {/* Product Header */}
-      <motion.section className="py-16 px-6 md:px-16" initial="hidden" animate="visible" variants={staggerContainer}>
+      <motion.section className="py-10 px-6 md:px-16" initial="hidden" animate="visible" variants={staggerContainer}>
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16">
-            {/* Product Images */}
+            {/* Product Images - OPTIMIZED */}
             <motion.div>
               <div className="space-y-6">
-                {/* Main Image */}
+                {/* Main Image - OPTIMIZED */}
                 <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 rounded-3xl overflow-hidden shadow-2xl">
                   {product.images?.[selectedImageIndex]?.asset?.url ? (
                     <Image
                       src={product.images[selectedImageIndex].asset.url}
                       alt={product.images[selectedImageIndex].alt || product.name}
-                      width={600}
-                      height={600}
+                      width={800}
+                      height={800}
+                      quality={95}
+                      priority={true}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      style={{ objectFit: "cover" }}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -306,7 +322,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   )}
                 </div>
 
-                {/* Image Thumbnails */}
+                {/* Image Thumbnails - OPTIMIZED */}
                 {product.images && product.images.length > 1 && (
                   <div className="flex space-x-3 overflow-x-auto pb-2">
                     {product.images.map((image: any, index: number) => (
@@ -317,7 +333,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                           selectedImageIndex === index ? "border-amber-500 shadow-lg scale-105" : "border-slate-200 hover:border-slate-300 hover:shadow-md"
                         }`}
                       >
-                        <Image src={image.asset.url} alt={image.alt || product.name} width={96} height={96} className="w-full h-full object-cover" />
+                        <Image src={image.asset.url} alt={image.alt || product.name} width={96} height={96} quality={85} sizes="96px" className="w-full h-full object-cover" style={{ objectFit: "cover" }} />
                       </button>
                     ))}
                   </div>
@@ -398,13 +414,15 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button
-                  onClick={() => setShowInquiryModal(true)}
-                  className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                >
-                  <Mail size={20} />
-                  Request Quote
-                </button>
+                <a href="mailto:info@harikaspices.com">
+                  <button
+                    // onClick={() => setShowInquiryModal(true)}
+                    className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  >
+                    <Mail size={20} />
+                    Request Quote
+                  </button>
+                </a>
                 <button
                   onClick={handleShare}
                   className="border-2 border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg"
@@ -579,12 +597,12 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
             )}
             {activeTab === "culinary" && product.culinaryUses && product.culinaryUses.length > 0 && (
               <div className="space-y-12">
-                <h3 className="text-3xl font-calistoga text-slate-900 mb-8">Technical Specifications</h3>
+                <h3 className="text-3xl font-calistoga text-slate-900 mb-8">Culinary Applications</h3>
 
                 <div className="grid md:grid-cols-2 gap-12">
                   {/* Quality Parameters */}
                   <div className="space-y-6">
-                    <h4 className="text-xl font-semibold text-slate-900 mb-6">Culinary Use</h4>
+                    <h4 className="text-xl font-semibold text-slate-900 mb-6">Culinary Uses</h4>
 
                     {product.culinaryUses.map((use: string, index: number) => (
                       <div key={index} className="flex items-start gap-4 p-6 bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl border border-amber-200 hover:shadow-md transition-shadow">
@@ -594,13 +612,13 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     ))}
                   </div>
 
-                  {/* Packaging & Storage */}
+                  {/* Health Benefits */}
                   <div className="space-y-6">
                     <h4 className="text-xl font-semibold text-slate-900 mb-6">Health Benefits</h4>
 
                     {/* Health Benefits */}
                     {product.healthBenefits && product.healthBenefits.length > 0 && (
-                      <div>
+                      <div className="space-y-4">
                         {product.healthBenefits.map((benefit: string, index: number) => (
                           <div key={index} className="flex items-start gap-4 p-4 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-xl border border-emerald-200">
                             <CheckCircle className="text-emerald-600 mt-1 flex-shrink-0" size={20} />
@@ -617,7 +635,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
         </div>
       </motion.section>
 
-      {/* Related Products Section */}
+      {/* Related Products Section - OPTIMIZED CARD HEIGHT */}
       {relatedProducts && relatedProducts.length > 0 && (
         <motion.section className="py-16 px-6 md:px-16 bg-gradient-to-b from-slate-50 to-white" initial="hidden" animate="visible" variants={staggerContainer}>
           <div className="max-w-7xl mx-auto">
@@ -625,14 +643,17 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
             <motion.div className="grid md:grid-cols-3 lg:grid-cols-3 gap-8" variants={staggerContainer}>
               {relatedProducts.slice(0, 3).map((relatedProduct: SanityDocument, index: number) => (
                 <motion.div key={relatedProduct._id} className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-200">
-                  <div className="aspect-square bg-slate-100 overflow-hidden">
+                  {/* OPTIMIZED IMAGE CONTAINER - REDUCED HEIGHT */}
+                  <div className="aspect-[4/3] bg-slate-100 overflow-hidden relative">
                     {relatedProduct.images?.[0]?.asset?.url ? (
                       <Image
                         src={relatedProduct.images[0].asset.url}
                         alt={relatedProduct.images[0].alt || relatedProduct.name}
-                        width={300}
-                        height={300}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        fill
+                        quality={85}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 300px"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        style={{ objectFit: "cover" }}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
@@ -641,7 +662,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     )}
                   </div>
                   <div className="p-6">
-                    <h3 className="font-semibold text-slate-900 mb-2 group-hover:text-amber-600 transition-colors">{relatedProduct.name}</h3>
+                    <h3 className="font-semibold text-slate-900 mb-2 group-hover:text-amber-600 transition-colors line-clamp-2">{relatedProduct.name}</h3>
                     {relatedProduct.shortDescription && <p className="text-slate-600 text-sm mb-4 line-clamp-2">{relatedProduct.shortDescription}</p>}
                     <Link href={`/products/${relatedProduct.slug?.current}`} className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-medium text-sm group-hover:gap-3 transition-all">
                       View Details
@@ -797,6 +818,56 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   </p>
                 </div>
               </form>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Success Popup */}
+      {showSuccessPopup && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 rounded-full flex items-center justify-center">
+                <CheckCircle className="text-emerald-600" size={32} />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">Inquiry Sent Successfully!</h3>
+              <p className="text-slate-600 mb-6 leading-relaxed">{popupMessage}</p>
+              <button
+                onClick={() => setShowSuccessPopup(false)}
+                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Got It!
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Error Popup */}
+      {showErrorPopup && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+                <AlertCircle className="text-red-600" size={32} />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">Oops! Something went wrong</h3>
+              <p className="text-slate-600 mb-6 leading-relaxed">{popupMessage}</p>
+              <div className="flex gap-3">
+                <button onClick={() => setShowErrorPopup(false)} className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-3 rounded-xl font-semibold transition-all duration-300">
+                  Close
+                </button>
+                <button
+                  onClick={() => {
+                    setShowErrorPopup(false);
+                    setShowInquiryModal(true);
+                  }}
+                  className="flex-1 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  Try Again
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>

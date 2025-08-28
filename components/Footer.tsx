@@ -13,7 +13,16 @@ const Footer = () => {
             {/* Logo Section */}
             <div className="flex flex-col items-start mb-12 pb-12 border-b border-white/10">
               <div className="mb-6">
-                <Image src="/logo.png" alt="Harika Spices Logo" width={120} height={60} className="h-12 w-auto" />
+                <Link href="/" className="flex items-center">
+                  <Image
+                    src="/logo.png" // Ganti dengan path logo asli Anda
+                    alt="Company Logo"
+                    width={250}
+                    height={60}
+                    className="h-8 w-auto sm:h-10 md:h-12 object-contain"
+                    priority
+                  />
+                </Link>
               </div>
               <p className="text-white/80 text-medium max-w-2xl leading-relaxed">
                 Premium Indonesian spices sourced directly from origin. We bring you the finest quality spices, herbs, and specialty ingredients from Central Java, Indonesia, with a commitment to sustainability and authentic flavors that
@@ -31,11 +40,14 @@ const Footer = () => {
 
                 <div className="mb-6">
                   <h4 className="text-white font-semibold mb-2">Contact</h4>
-                  <p className="text-white text-sm">
-                    +62 811 2723 939
-                    <br />
-                    info@harikaspices.com
-                  </p>
+                  <div className="flex flex-col gap-1">
+                    <a href="https://wa.me/905421793483" target="_blank" rel="noopener noreferrer" className="text-white text-sm">
+                      +90 542 179 3483
+                    </a>
+                    <a href="mailto:info@harikaspices.com" target="_blank" rel="noopener noreferrer" className="text-white text-sm">
+                      info@harikaspices.com
+                    </a>
+                  </div>
                 </div>
 
                 {/* Social Media Icons */}
@@ -90,7 +102,7 @@ const Footer = () => {
                 <h4 className="text-white font-semibold mb-4">Products</h4>
                 <ul className="space-y-3">
                   <li>
-                    <Link href="/products/clove-indonesia" className="text-white/80 hover:text-white transition-colors text-sm">
+                    <Link href="/products/cloves-indonesia" className="text-white/80 hover:text-white transition-colors text-sm">
                       Clove
                     </Link>
                   </li>
@@ -122,12 +134,12 @@ const Footer = () => {
                 <h4 className="text-white font-semibold mb-4">Resources</h4>
                 <ul className="space-y-3">
                   <li>
-                    <a href="https://www.linkedin.com/company/harikaspices" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-white transition-colors text-sm">
+                    <a href="#" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-white transition-colors text-sm">
                       LinkedIn Page
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.instagram.com/harikaspices" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-white transition-colors text-sm">
+                    <a href="#" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-white transition-colors text-sm">
                       Instagram Feed
                     </a>
                   </li>
@@ -160,7 +172,7 @@ const Footer = () => {
             <Link href="/terms-of-service" className="text-white/80 hover:text-white transition-colors text-sm">
               Terms of Service
             </Link>
-            <Link href="/cookie-policy" className="text-white/80 hover:text-white transition-colors text-sm">
+            <Link href="/#" className="text-white/80 hover:text-white transition-colors text-sm">
               Cookie Policy
             </Link>
           </div>

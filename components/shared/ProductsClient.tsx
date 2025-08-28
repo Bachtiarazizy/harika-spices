@@ -377,7 +377,7 @@ export default function ProductsClient({ products, categories }: ProductsClientP
           {/* Products Grid/List */}
           <motion.div variants={staggerContainer}>
             {filteredAndSortedProducts.length > 0 ? (
-              <div className={viewMode === "grid" ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" : "space-y-4"}>
+              <div className={viewMode === "grid" ? "grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" : "space-y-4"}>
                 {filteredAndSortedProducts.map((product: SanityDocument) => (
                   <motion.div
                     key={product._id}
@@ -397,7 +397,7 @@ export default function ProductsClient({ products, categories }: ProductsClientP
                                 alt={product.images[0].alt || product.name}
                                 width={viewMode === "grid" ? 300 : 192}
                                 height={viewMode === "grid" ? 200 : 128}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                className="w-full h-full aspect-[4/3] object-cover group-hover:scale-110 transition-transform duration-500"
                               />
                             </div>
                           )}
@@ -413,11 +413,11 @@ export default function ProductsClient({ products, categories }: ProductsClientP
                             <h3 className={`font-calistoga text-[#392E20] group-hover:text-[#392E20]/70 transition-colors leading-tight text-medium md:text-lg`}>{product.name}</h3>
                           </div>
 
-                          {product.scientificName && <p className={`text-gray-500 italic hidden md:block ${viewMode === "grid" ? "text-sm mb-2" : "text-sm mb-1"}`}>{product.scientificName}</p>}
+                          {product.scientificName && <p className={`text-gray-500 hidden md:block italic  ${viewMode === "grid" ? "text-sm mb-2" : "text-sm mb-1"}`}>{product.scientificName}</p>}
 
-                          {product.shortDescription && <p className={`text-gray-600 leading-relaxed text-sm mb-3 line-clamp-2`}>{product.shortDescription}</p>}
+                          {product.shortDescription && <p className="text-gray-600 leading-relaxed  text-sm mb-3 line-clamp-2">{product.shortDescription}</p>}
 
-                          <div className="md:flex items-center hidden justify-between pt-3 border-t border-gray-100">
+                          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                             <span className="text-[#392E20] font-semibold group-hover:text-[#392E20]/70 transition-colors text-sm">View Details</span>
                             <ArrowRight size={16} className="text-[#392E20] group-hover:translate-x-1 transition-transform" />
                           </div>
