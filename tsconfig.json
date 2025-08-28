@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next-sitemap.config.js", "next-sitemap.config.js", "app/api/send-inquiry/route.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next-sitemap.config.js", "next-sitemap.config.js", "app/api/send-inquiry/route.js", "components/shared/test-email.jsx"],
   "exclude": ["node_modules"]
 }
