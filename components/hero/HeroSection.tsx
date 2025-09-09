@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function HeroSection() {
   return (
-    <section className="relative h-screen flex flex-col justify-end overflow-hidden">
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Image Background */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -24,22 +24,24 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/30"></div>
       </div>
 
-      <div className="relative z-10 w-full px-6 md:px-16 py-12">
-        <div className="mx-auto flex flex-col lg:flex-row items-start lg:items-end lg:justify-between lg:gap-16">
+      <div className="relative z-10 w-full px-6 md:px-16">
+        <div className="mx-auto max-w-4xl text-start md:text-center">
           {/* Title */}
-          <motion.div className="lg:w-1/2 text-left w-full" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }}>
-            <h1 className="text-4xl font-calistoga md:text-5xl lg:text-6xl text-white leading-tight">Premium Indonesian Spices for Global Trade</h1>
+          <motion.div className="mb-5" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }}>
+            <h1 className="text-4xl font-calistoga max-w-2xl mx-auto md:text-5xl lg:text-6xl text-white leading-tight">Premium Indonesian Spices for Global Trade</h1>
           </motion.div>
 
-          <motion.div className="lg:w-1/2 max-w-lg text-left w-full" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }}>
-            <p className="text-lg md:text-xl font-raleway text-gray-200 mb-4">Sourced ethically and sustainably from Indonesia’s finest farms cloves, nutmeg, and pepper delivered with quality you can trust.</p>
+          <motion.div className="mb-8" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }}>
+            <p className="text-lg md:text-2xl font-raleway text-gray-200 max-w-3xl mx-auto">Sourced ethically and sustainably from Indonesia&apos;s finest farms cloves, nutmeg, and pepper delivered with quality you can trust.</p>
+          </motion.div>
 
-            <div className="flex flex-row gap-4 justify-start">
+          <motion.div initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }}>
+            <div className="flex flex-row gap-4 justify-start md:justify-center">
               <Link href="/products" className="inline-block">
-                <button className="bg-white border border-white py-2 px-4 text-black rounded-md font-medium tracking-wide hover:bg-gray-100 transition-colors duration-200">Explore Products</button>
+                <button className="bg-white border border-white py-2 md:py-3 px-4 md:px-7 text-black rounded-md font-medium tracking-wide hover:bg-gray-100 transition-colors duration-200">Explore Products</button>
               </Link>
               <Link href="/contact" className="inline-block">
-                <button className="border border-white py-2 px-4 text-white rounded-md font-medium tracking-wide hover:bg-white hover:text-black transition-colors duration-200">Request a Quote</button>
+                <button className="border border-white py-2 md:py-3 px-4 md:px- text-white rounded-md font-medium tracking-wide hover:bg-white hover:text-black transition-colors duration-200">Request a Quote</button>
               </Link>
             </div>
           </motion.div>

@@ -157,7 +157,7 @@ export default function BlogCardSectionClient({
           <motion.div>
             <div className="inline-block mb-4"></div>
             <h2 className="text-3xl md:text-4xl text-gray-900 font-calistoga leading-snug mb-6">{sectionTitle}</h2>
-            <p className="ttext-gray-700 text-lg max-w-2xl mx-auto">{sectionSubtitle}</p>
+            <p className="text-gray-700 hidden md:block text-lg max-w-2xl mx-auto">{sectionSubtitle}</p>
           </motion.div>
         </motion.div>
 

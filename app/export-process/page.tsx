@@ -53,8 +53,8 @@ export default function ExportProcessPage() {
       {/* Hero Section */}
       <header className="relative py-24 bg-[#392E20] text-white">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl lg:text-6xl font-calistoga mb-6">Export Process</h1>
-          <p className="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto">From farm to your doorstep - our comprehensive export process ensures quality, reliability, and timely delivery of premium Indonesian coffee and cocoa.</p>
+          <h1 className="text-white font-calistoga text-3xl md:text-4xl lg:text-5xl mb-6">Export Process</h1>
+          <p className="text-gray-200 text-medium md:text-lg max-w-3xl mx-auto">From farm to your doorstep - our comprehensive export process ensures quality, reliability, and timely delivery of premium Indonesian coffee and cocoa.</p>
         </div>
       </header>
 

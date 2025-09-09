@@ -134,8 +134,8 @@ export default function BlogPostsClient({ featuredPosts, allPosts }: BlogPostsCl
         <div className="max-w-7xl mx-auto">
           <motion.div className="mb-16" initial="hidden" animate="visible" variants={containerVariants}>
             <motion.div variants={itemVariants} className="text-center">
-              <h2 className="text-white text-4xl md:text-5xl font-calistoga mb-4">All Articles</h2>
-              <p className="text-gray-200 text-lg max-w-3xl mx-auto">Stay updated with global spice market movements, sustainability practices, and industry knowledge.</p>
+              <h1 className="text-white font-calistoga text-3xl md:text-4xl lg:text-5xl mb-4">All Articles</h1>
+              <p className="text-gray-200 text-medium md:text-lg max-w-3xl mx-auto">Stay updated with global spice market movements, sustainability practices, and industry knowledge.</p>
             </motion.div>
           </motion.div>
 

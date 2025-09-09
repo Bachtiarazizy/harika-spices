@@ -38,8 +38,8 @@ const PrivacyPolicyPage = () => {
       <motion.header className="bg-[#392E20] py-16 px-4" initial="hidden" animate="visible" variants={containerVariants}>
         <div className="max-w-4xl mx-auto">
           <motion.div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-calistoga text-white mt-12 mb-4">Privacy Policy</h1>
-            <p className="text-lg md:text-xl text-gray-100 max-w-2xl mx-auto">Your privacy is important to us. This policy explains how we collect, use, and protect your personal information.</p>
+            <h1 className="text-white font-calistoga text-3xl md:text-4xl lg:text-5xl mb-6 mt-12 mb-4">Privacy Policy</h1>
+            <p className="text-gray-200 text-medium md:text-lg max-w-3xl mx-auto">Your privacy is important to us. This policy explains how we collect, use, and protect your personal information.</p>
           </motion.div>
         </div>
       </motion.header>

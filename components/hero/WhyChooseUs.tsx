@@ -3,19 +3,19 @@ import React from "react";
 
 export default function WhyChooseUs() {
   return (
-    <section className="bg-gray-100 py-32 min-h-screen flex items-center font-raleway">
+    <section className="bg-gray-100 py-32 min-h-screen text-medium md:text-lg flex items-center font-raleway">
       <div className="container text-lg md:text-xl mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center justify-between">
-        <div className="w-full flex items-center justify-start">
+        <div className="w-full hidden md:flex items-center justify-start">
           <div className="relative w-[500px] h-[500px] rounded-lg overflow-hidden shadow-lg">
             <Image src="/hero.jpg" alt="Spices" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" fill className="object-cover rounded-lg" />
           </div>
         </div>
 
         <div>
-          <h2 className="text-3xl md:text-4xl font-calistoga text-gray-900 leading-snug mb-6">Why Choose Harika Spices?</h2>
-          <p className="text-gray-700 mb-8">Choosing Harika means gaining more than just a supplier — you gain a partner who prioritizes quality, trust, and your business growth.</p>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl  font-calistoga text-gray-900 leading-snug mb-6">Why Choose Harika Spices?</h2>
+          <p className="text-gray-700 text-medium md:text-lg mb-8">Choosing Harika means gaining more than just a supplier — you gain a partner who prioritizes quality, trust, and your business growth.</p>
 
-          <div className="space-y-4 mb-8">
+          <div className="space-y-4 mb-8 text-medium md:text-lg">
             <div className="flex items-start gap-3">
               <div className="w-5 h-5 bg-green-500 rounded-sm flex items-center justify-center mt-0.5">
                 <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">

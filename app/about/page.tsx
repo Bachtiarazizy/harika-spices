@@ -63,8 +63,8 @@ const AboutPage: React.FC = () => {
         <motion.div className="max-w-7xl mx-auto text-center" initial="hidden" animate="visible" variants={containerVariants}>
           <motion.div variants={itemVariants}>
             <div className="inline-block mb-4"></div>
-            <h1 className="text-white font-calistoga text-4xl md:text-5xl mb-6 leading-tight">Rooted in Indonesia’s Spice Heritage</h1>
-            <p className="text-gray-200 text-lg md:text-xl max-w-3xl mx-auto">
+            <h1 className="text-white font-calistoga text-3xl md:text-4xl lg:text-5xl text-centerl mb-6 leading-tight">Rooted in Indonesia’s Spice Heritage</h1>
+            <p className="text-gray-200 text-medium md:text-lg max-w-3xl mx-auto">
               Indonesia has long been known as the heart of the world’s spice trade. At Harika Spices, we carry forward this legacy by connecting the richness of our land cloves, nutmeg, and pepper with businesses across the globe.
             </p>
           </motion.div>
@@ -74,14 +74,14 @@ const AboutPage: React.FC = () => {
       {/* Story Section - Light Background */}
       <section className="bg-white py-20 font-raleway">
         <div className="container mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-2 text-medium md:text-lg gap-12 items-center">
-          <div className="w-full flex items-center justify-center">
-            <div className="relative w-[500px] h-[500px] rounded-lg overflow-hidden shadow-lg">
-              <Image src="/hero-bg.jpg" alt="Our Story" width={500} height={500} className="object-cover w-full h-full rounded-lg" />
+          <div className="w-full">
+            <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-lg">
+              <Image src="/hero-bg.jpg" alt="Our Story" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw" className="object-cover rounded-lg" />
             </div>
           </div>
 
           <div>
-            <h2 className="text-4xl md:text-5xl font-calistoga text-gray-900 leading-snug mb-6">Our Mission</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-calistoga text-gray-900 leading-snug mb-6">Our Mission</h2>
             <p className="text-gray-700 mb-6">
               To deliver premium-quality Indonesian spices while ensuring ethical, transparent, and sustainable trade that benefits both our global partners and the farmers at the heart of our supply chain.
             </p>
@@ -101,24 +101,24 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* Values Grid Section - Dark Background */}
-      <section className="bg-[#392E20] py-20 px-8">
+      <section className="bg-[#392E20] py-20 px-6">
         <motion.div className="max-w-7xl mx-auto" initial="hidden" animate="visible" variants={containerVariants}>
           <motion.div className="text-center mb-12" variants={itemVariants}>
-            <h2 className="text-white font-calistoga text-4xl md:text-5xl mb-4">What We Stand For</h2>
+            <h2 className="text-white font-calistoga text-3xl md:text-4xl lg:text-5xl mb-4">What We Stand For</h2>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {cards.map((card, index) => (
               <motion.div
                 key={index}
-                className="group relative bg-[#402013] backdrop-blur-sm rounded-2xl p-8 hover:bg-[#ff6600]/25 transition-all duration-300 text-start"
+                className="group relative bg-[#402013] backdrop-blur-sm rounded-2xl p-8 hover:bg-[#ff6600]/25 transition-all duration-300 text-center"
                 initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
                 viewport={{ once: true, amount: 0.3 }}
               >
                 {/* Icon */}
-                <div className="flex justify-start mb-4">
-                  <div className="p-4 bg-[#4f3126] backdrop-blur-sm rounded-full group-hover:text-[#ff6600] transition-colors duration-300">{card.icon}</div>
+                <div className="flex justify-center mb-4">
+                  <div className="p-4 bg-[#4f3126] backdrop-blur-sm rounded-full text-white group-hover:text-[#ff6600] transition-all duration-300">{card.icon}</div>
                 </div>
 
                 {/* Content */}
@@ -134,7 +134,7 @@ const AboutPage: React.FC = () => {
       <section className="bg-gray-100 py-20 font-raleway">
         <div className="container mx-auto px-6 lg:px-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-calistoga text-gray-900 leading-snug mb-6">Our Vision</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-calistoga text-gray-900 leading-snug mb-6">Our Vision</h2>
             <p className="text-gray-700 text-medium md:text-lg max-w-2xl mx-auto">
               To be a trusted bridge between Indonesia’s farmers and global businesses, ensuring the world experiences the finest spices while local communities thrive through fair and sustainable trade.
             </p>

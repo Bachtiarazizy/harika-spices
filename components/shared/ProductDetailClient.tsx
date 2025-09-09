@@ -8,159 +8,138 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { type SanityDocument } from "next-sanity";
-import { Star, MapPin, Package, CheckCircle, AlertCircle, Clock, Calendar, Leaf, Award, Shield, Heart, Share2, Mail, Droplets, Clock3, ShoppingCart, Info, Send, X, ArrowRight, Phone, Building, User } from "lucide-react";
+import {
+  Star,
+  MapPin,
+  Package,
+  CheckCircle,
+  AlertCircle,
+  Clock,
+  Calendar,
+  Leaf,
+  Award,
+  Shield,
+  Heart,
+  Share2,
+  Mail,
+  Droplets,
+  Clock3,
+  ShoppingCart,
+  Info,
+  Send,
+  X,
+  ArrowRight,
+  Phone,
+  Building,
+  User,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { PortableText } from "@portabletext/react";
 
+const fadeInUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: "easeOut" },
+};
+
 const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
+  animate: {
     transition: {
       staggerChildren: 0.1,
-      duration: 0.6,
     },
   },
 };
 
-// PortableText components for custom styling
+// PortableText components for clean typography
 const portableTextComponents = {
   block: {
-    normal: ({ children }: any) => <p className="mb-4 text-slate-700 leading-relaxed">{children}</p>,
-    h1: ({ children }: any) => <h1 className="text-3xl font-bold mb-4 text-slate-900">{children}</h1>,
-    h2: ({ children }: any) => <h2 className="text-2xl font-semibold mb-3 text-slate-900">{children}</h2>,
-    h3: ({ children }: any) => <h3 className="text-xl font-semibold mb-2 text-slate-900">{children}</h3>,
-    blockquote: ({ children }: any) => <blockquote className="border-l-4 border-amber-500 pl-4 my-4 italic text-slate-600 bg-amber-50 py-2">{children}</blockquote>,
+    normal: ({ children }: any) => <p className="mb-4 text-gray-700 leading-relaxed text-base">{children}</p>,
+    h1: ({ children }: any) => <h1 className="text-2xl font-bold mb-4 text-gray-900">{children}</h1>,
+    h2: ({ children }: any) => <h2 className="text-xl font-semibold mb-3 text-gray-900">{children}</h2>,
+    h3: ({ children }: any) => <h3 className="text-lg font-semibold mb-2 text-gray-900">{children}</h3>,
+    blockquote: ({ children }: any) => <blockquote className="border-l-4 border-blue-500 pl-4 my-4 italic text-gray-600 bg-gray-50 py-3 rounded-r-lg">{children}</blockquote>,
   },
   list: {
-    bullet: ({ children }: any) => <ul className="list-disc list-inside mb-4 space-y-2">{children}</ul>,
-    number: ({ children }: any) => <ol className="list-decimal list-inside mb-4 space-y-2">{children}</ol>,
+    bullet: ({ children }: any) => <ul className="list-disc ml-6 mb-4 space-y-1">{children}</ul>,
+    number: ({ children }: any) => <ol className="list-decimal ml-6 mb-4 space-y-1">{children}</ol>,
   },
   listItem: {
-    bullet: ({ children }: any) => <li className="text-slate-700">{children}</li>,
-    number: ({ children }: any) => <li className="text-slate-700">{children}</li>,
+    bullet: ({ children }: any) => <li className="text-gray-700">{children}</li>,
+    number: ({ children }: any) => <li className="text-gray-700">{children}</li>,
   },
   marks: {
-    strong: ({ children }: any) => <strong className="font-semibold text-slate-900">{children}</strong>,
+    strong: ({ children }: any) => <strong className="font-semibold text-gray-900">{children}</strong>,
     em: ({ children }: any) => <em className="italic">{children}</em>,
     link: ({ children, value }: any) => (
-      <a href={value?.href} className="text-amber-600 hover:text-amber-700 underline" target="_blank" rel="noopener noreferrer">
+      <a href={value?.href} className="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer">
         {children}
       </a>
     ),
   },
 };
 
-// Helper functions
-const getAvailabilityColor = (availability: string) => {
-  switch (availability) {
-    case "available":
-      return "text-emerald-700 bg-emerald-50 border-emerald-200";
-    case "limited":
-      return "text-amber-700 bg-amber-50 border-amber-200";
-    case "preorder":
-      return "text-blue-700 bg-blue-50 border-blue-200";
-    case "unavailable":
-      return "text-red-700 bg-red-50 border-red-200";
-    case "seasonal":
-      return "text-purple-700 bg-purple-50 border-purple-200";
-    default:
-      return "text-slate-700 bg-slate-50 border-slate-200";
-  }
-};
-
-const getAvailabilityText = (availability: string) => {
-  switch (availability) {
-    case "available":
-      return "In Stock";
-    case "limited":
-      return "Limited Stock";
-    case "preorder":
-      return "Pre-order";
-    case "unavailable":
-      return "Out of Stock";
-    case "seasonal":
-      return "Seasonal";
-    default:
-      return "Unknown";
-  }
-};
-
-const getAvailabilityIcon = (availability: string) => {
-  switch (availability) {
-    case "available":
-      return <CheckCircle size={16} />;
-    case "limited":
-      return <AlertCircle size={16} />;
-    case "preorder":
-      return <Clock size={16} />;
-    case "seasonal":
-      return <Calendar size={16} />;
-    default:
-      return <AlertCircle size={16} />;
-  }
+// Helper functions with professional styling
+const getAvailabilityConfig = (availability: string) => {
+  const configs = {
+    available: {
+      color: "text-green-700 bg-green-50 border-green-200",
+      text: "In Stock",
+      icon: <CheckCircle size={16} />,
+    },
+    limited: {
+      color: "text-orange-700 bg-orange-50 border-orange-200",
+      text: "Limited Stock",
+      icon: <AlertCircle size={16} />,
+    },
+    preorder: {
+      color: "text-blue-700 bg-blue-50 border-blue-200",
+      text: "Pre-order",
+      icon: <Clock size={16} />,
+    },
+    unavailable: {
+      color: "text-red-700 bg-red-50 border-red-200",
+      text: "Out of Stock",
+      icon: <AlertCircle size={16} />,
+    },
+    seasonal: {
+      color: "text-purple-700 bg-purple-50 border-purple-200",
+      text: "Seasonal",
+      icon: <Calendar size={16} />,
+    },
+    default: {
+      color: "text-gray-700 bg-gray-50 border-gray-200",
+      text: "Unknown",
+      icon: <AlertCircle size={16} />,
+    },
+  };
+  return configs[availability as keyof typeof configs] || configs.default;
 };
 
 const getHarvestSeasonText = (season: string) => {
-  switch (season) {
-    case "q1":
-      return "Jan - Mar";
-    case "q2":
-      return "Apr - Jun";
-    case "q3":
-      return "Jul - Sep";
-    case "q4":
-      return "Oct - Dec";
-    case "year_round":
-      return "Year Round";
-    default:
-      return season;
-  }
+  const seasons = {
+    q1: "Jan - Mar",
+    q2: "Apr - Jun",
+    q3: "Jul - Sep",
+    q4: "Oct - Dec",
+    year_round: "Year Round",
+  };
+  return seasons[season as keyof typeof seasons] || season;
 };
 
-const getCertificationIcon = (cert: string) => {
-  switch (cert) {
-    case "organic":
-      return <Leaf className="text-emerald-600" size={18} />;
-    case "halal":
-      return <Shield className="text-blue-600" size={18} />;
-    case "haccp":
-      return <Award className="text-purple-600" size={18} />;
-    case "iso22000":
-      return <Award className="text-red-600" size={18} />;
-    case "fda":
-      return <Shield className="text-blue-800" size={18} />;
-    case "eu_organic":
-      return <Leaf className="text-emerald-700" size={18} />;
-    case "kosher":
-      return <Shield className="text-indigo-600" size={18} />;
-    case "fair_trade":
-      return <Heart className="text-pink-600" size={18} />;
-    default:
-      return <Award className="text-slate-600" size={18} />;
-  }
-};
-
-const getCertificationLabel = (cert: string) => {
-  switch (cert) {
-    case "organic":
-      return "Organic Certified";
-    case "halal":
-      return "Halal Certified";
-    case "haccp":
-      return "HACCP";
-    case "iso22000":
-      return "ISO 22000";
-    case "fda":
-      return "FDA Approved";
-    case "eu_organic":
-      return "EU Organic";
-    case "kosher":
-      return "Kosher";
-    case "fair_trade":
-      return "Fair Trade";
-    default:
-      return cert;
-  }
+const getCertificationConfig = (cert: string) => {
+  const configs = {
+    organic: { icon: <Leaf size={18} />, label: "Organic Certified", color: "text-green-600" },
+    halal: { icon: <Shield size={18} />, label: "Halal Certified", color: "text-blue-600" },
+    haccp: { icon: <Award size={18} />, label: "HACCP", color: "text-purple-600" },
+    iso22000: { icon: <Award size={18} />, label: "ISO 22000", color: "text-red-600" },
+    fda: { icon: <Shield size={18} />, label: "FDA Approved", color: "text-blue-800" },
+    eu_organic: { icon: <Leaf size={18} />, label: "EU Organic", color: "text-green-700" },
+    kosher: { icon: <Shield size={18} />, label: "Kosher", color: "text-indigo-600" },
+    fair_trade: { icon: <Heart size={18} />, label: "Fair Trade", color: "text-pink-600" },
+    default: { icon: <Award size={18} />, label: cert, color: "text-gray-600" },
+  };
+  return configs[cert as keyof typeof configs] || configs.default;
 };
 
 interface ProductDetailClientProps {
@@ -172,6 +151,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState("overview");
   const [showInquiryModal, setShowInquiryModal] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({});
   const [inquiryForm, setInquiryForm] = useState({
     quantity: "",
     message: "",
@@ -180,22 +160,27 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
     company: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
 
+  const availabilityConfig = getAvailabilityConfig(product.availability);
+
+  const toggleSection = (section: string) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitError(null);
 
     try {
       const response = await fetch("/api/send-inquiry", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productName: product.name,
           name: inquiryForm.name,
@@ -209,41 +194,20 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
       const data = await response.json();
 
       if (response.ok) {
-        // Reset form dan tutup modal
-        setInquiryForm({
-          quantity: "",
-          message: "",
-          name: "",
-          email: "",
-          company: "",
-        });
+        setInquiryForm({ quantity: "", message: "", name: "", email: "", company: "" });
         setShowInquiryModal(false);
-
-        // Show success popup
-        setPopupMessage("Thank you for your inquiry! We'll get back to you within 24 hours. A confirmation email has been sent to your address.");
+        setPopupMessage("Thank you for your inquiry! We'll get back to you within 24 hours.");
         setShowSuccessPopup(true);
-
-        // Auto close success popup after 5 seconds
-        setTimeout(() => {
-          setShowSuccessPopup(false);
-        }, 5000);
+        setTimeout(() => setShowSuccessPopup(false), 5000);
       } else {
         setPopupMessage(data.error || "Failed to send inquiry");
         setShowErrorPopup(true);
-
-        // Auto close error popup after 5 seconds
-        setTimeout(() => {
-          setShowErrorPopup(false);
-        }, 5000);
+        setTimeout(() => setShowErrorPopup(false), 5000);
       }
     } catch (error) {
       setPopupMessage("Network error. Please try again later.");
       setShowErrorPopup(true);
-
-      // Auto close error popup after 5 seconds
-      setTimeout(() => {
-        setShowErrorPopup(false);
-      }, 5000);
+      setTimeout(() => setShowErrorPopup(false), 5000);
     } finally {
       setIsSubmitting(false);
     }
@@ -261,7 +225,6 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
         console.log("Error sharing:", err);
       }
     } else {
-      // Fallback - copy to clipboard
       navigator.clipboard.writeText(window.location.href);
       alert("Product link copied to clipboard!");
     }
@@ -274,66 +237,61 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
-      <motion.div className="bg-[#392E20] backdrop-blur-sm py-10 px-6 md:px-16" initial="hidden" animate="visible"></motion.div>
-      {/* Breadcrumb */}
-      <motion.div className="pt-10 px-6 md:px-16" initial="hidden" animate="visible">
+      <div className="bg-gray-50 border-b border-gray-200 py-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <nav className="flex items-center space-x-2 text-sm">
-            <Link href="/" className="text-amber-600 hover:text-amber-700 transition-colors">
+            <Link href="/" className="text-blue-600 hover:text-blue-800 transition-colors">
               Home
             </Link>
-            <span className="text-slate-400">/</span>
-            <Link href="/products" className="text-amber-600 hover:text-amber-700 transition-colors">
+            <span className="text-gray-400">/</span>
+            <Link href="/products" className="text-blue-600 hover:text-blue-800 transition-colors">
               Products
             </Link>
-            <span className="text-slate-400">/</span>
-            <span className="text-slate-700 font-medium">{product.name}</span>
+            <span className="text-gray-400">/</span>
+            <span className="text-gray-700 font-medium truncate">{product.name}</span>
           </nav>
         </div>
-      </motion.div>
+      </div>
 
       {/* Product Header */}
-      <motion.section className="py-10 px-6 md:px-16" initial="hidden" animate="visible" variants={staggerContainer}>
+      <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16">
-            {/* Product Images - OPTIMIZED */}
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
             <motion.div>
-              <div className="space-y-6">
-                {/* Main Image - OPTIMIZED */}
-                <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 rounded-3xl overflow-hidden shadow-2xl">
+              <div className="space-y-4">
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden shadow-lg">
                   {product.images?.[selectedImageIndex]?.asset?.url ? (
                     <Image
                       src={product.images[selectedImageIndex].asset.url}
                       alt={product.images[selectedImageIndex].alt || product.name}
-                      width={800}
-                      height={800}
+                      width={600}
+                      height={600}
                       quality={95}
                       priority={true}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                       style={{ objectFit: "cover" }}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Package size={80} className="text-slate-400" />
+                      <Package size={64} className="text-gray-400" />
                     </div>
                   )}
                 </div>
 
-                {/* Image Thumbnails - OPTIMIZED */}
+                {/* Image Thumbnails */}
                 {product.images && product.images.length > 1 && (
-                  <div className="flex space-x-3 overflow-x-auto pb-2">
+                  <div className="flex space-x-2 overflow-x-auto pb-2">
                     {product.images.map((image: any, index: number) => (
                       <button
                         key={index}
                         onClick={() => setSelectedImageIndex(index)}
-                        className={`flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden border-3 transition-all duration-300 ${
-                          selectedImageIndex === index ? "border-amber-500 shadow-lg scale-105" : "border-slate-200 hover:border-slate-300 hover:shadow-md"
+                        className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                          selectedImageIndex === index ? "border-blue-500 shadow-md" : "border-gray-200 hover:border-gray-300"
                         }`}
                       >
-                        <Image src={image.asset.url} alt={image.alt || product.name} width={96} height={96} quality={85} sizes="96px" className="w-full h-full object-cover" style={{ objectFit: "cover" }} />
+                        <Image src={image.asset.url} alt={image.alt || product.name} width={80} height={80} className="w-full h-full object-cover" />
                       </button>
                     ))}
                   </div>
@@ -342,28 +300,28 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
             </motion.div>
 
             {/* Product Info */}
-            <motion.div className="space-y-8">
+            <motion.div className="space-y-6">
               {/* Badges */}
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2">
                 {product.featured && (
-                  <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 shadow-lg">
-                    <Star size={16} />
-                    Featured Product
+                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                    <Star size={14} />
+                    Featured
                   </span>
                 )}
-                {product.newProduct && <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">New Arrival</span>}
-                <span className={`px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 border ${getAvailabilityColor(product.availability)}`}>
-                  {getAvailabilityIcon(product.availability)}
-                  {getAvailabilityText(product.availability)}
+                {product.newProduct && <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">New</span>}
+                <span className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 border ${availabilityConfig.color}`}>
+                  {availabilityConfig.icon}
+                  {availabilityConfig.text}
                 </span>
               </div>
 
-              {/* Product Name & Scientific Name */}
+              {/* Product Name & Category */}
               <div>
-                <h1 className="text-4xl md:text-5xl font-calistoga text-slate-900 mb-4 leading-tight">{product.name}</h1>
-                {product.scientificName && <p className="text-xl text-slate-600 italic mb-2">{product.scientificName}</p>}
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 leading-tight">{product.name}</h1>
+                {product.scientificName && <p className="text-lg text-gray-600 italic mb-2">{product.scientificName}</p>}
                 {product.category && (
-                  <p className="text-amber-600 font-semibold text-lg">
+                  <p className="text-blue-600 font-medium">
                     {product.category.name}
                     {product.subCategory && ` • ${product.subCategory.name}`}
                   </p>
@@ -371,112 +329,99 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               </div>
 
               {/* Short Description */}
-              {product.shortDescription && <p className="text-slate-700 text-xl leading-relaxed font-light">{product.shortDescription}</p>}
+              {product.shortDescription && <p className="text-gray-700 text-lg leading-relaxed">{product.shortDescription}</p>}
 
               {/* Key Info Grid */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {product.origin && (
-                  <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="p-2 bg-amber-100 rounded-lg">
-                      <MapPin className="text-amber-600" size={20} />
-                    </div>
+                  <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <MapPin className="text-blue-600 flex-shrink-0" size={20} />
                     <div>
-                      <div className="text-sm text-slate-500 font-medium">Origin</div>
-                      <div className="font-semibold text-slate-900">{product.origin}</div>
+                      <div className="text-sm text-gray-500 font-medium">Origin</div>
+                      <div className="font-semibold text-gray-900">{product.origin}</div>
                     </div>
                   </div>
                 )}
 
                 {product.harvestSeason && (
-                  <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="p-2 bg-emerald-100 rounded-lg">
-                      <Calendar className="text-emerald-600" size={20} />
-                    </div>
+                  <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <Calendar className="text-green-600 flex-shrink-0" size={20} />
                     <div>
-                      <div className="text-sm text-slate-500 font-medium">Harvest Season</div>
-                      <div className="font-semibold text-slate-900">{getHarvestSeasonText(product.harvestSeason)}</div>
+                      <div className="text-sm text-gray-500 font-medium">Harvest Season</div>
+                      <div className="font-semibold text-gray-900">{getHarvestSeasonText(product.harvestSeason)}</div>
                     </div>
                   </div>
                 )}
 
                 {product.pricing?.priceRange && (
-                  <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <Package className="text-blue-600" size={20} />
-                    </div>
+                  <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200 sm:col-span-2">
+                    <Package className="text-purple-600 flex-shrink-0" size={20} />
                     <div>
-                      <div className="text-sm text-slate-500 font-medium">Price Range</div>
-                      <div className="font-semibold text-slate-900">{product.pricing.priceRange}</div>
+                      <div className="text-sm text-gray-500 font-medium">Price Range</div>
+                      <div className="font-semibold text-gray-900">{product.pricing.priceRange}</div>
                     </div>
                   </div>
                 )}
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <a href="mailto:info@harikaspices.com">
-                  <button
-                    // onClick={() => setShowInquiryModal(true)}
-                    className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                  >
-                    <Mail size={20} />
-                    Request Quote
-                  </button>
-                </a>
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <button
-                  onClick={handleShare}
-                  className="border-2 border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg"
+                  onClick={() => setShowInquiryModal(true)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
                 >
-                  <Share2 size={20} />
-                  Share Product
+                  <Mail size={18} />
+                  Request Quote
+                </button>
+                <button onClick={handleShare} className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center gap-2">
+                  <Share2 size={18} />
+                  Share
                 </button>
               </div>
             </motion.div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Product Details Tabs */}
-      <motion.section className="py-16 px-6 md:px-16 bg-white" initial="hidden" animate="visible" variants={staggerContainer}>
+      <section className="py-8 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
         <div className="max-w-7xl mx-auto">
           {/* Tab Navigation */}
-          <div className="flex flex-wrap gap-2 mb-12 border-b border-slate-200">
+          <div className="flex flex-wrap gap-1 mb-8 border-b border-gray-200">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-3 px-8 py-4 font-semibold rounded-t-xl transition-all duration-300 ${
-                  activeTab === tab.id ? "bg-white text-amber-600 border-b-3 border-amber-600 shadow-lg -mb-px" : "text-slate-600 hover:text-slate-800 hover:bg-slate-50"
+                className={`flex items-center gap-2 px-4 sm:px-6 py-3 font-medium rounded-t-lg transition-colors duration-200 ${
+                  activeTab === tab.id ? "bg-white text-blue-600 border-b-2 border-blue-600 -mb-px" : "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
                 }`}
               >
-                <tab.icon size={20} />
-                {tab.label}
+                <tab.icon size={18} />
+                <span className="hidden sm:inline">{tab.label}</span>
               </button>
             ))}
           </div>
 
           {/* Tab Content */}
-          <motion.div key={activeTab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="">
+          <motion.div key={activeTab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
             {/* Overview Tab */}
             {activeTab === "overview" && (
-              <div className="space-y-12">
-                {/* Description */}
+              <div className="space-y-8">
                 {product.description && (
                   <div>
-                    <h3 className="text-3xl font-calistoga text-slate-900 mb-6">Product Description</h3>
-                    <div className="prose max-w-none text-slate-700 text-lg leading-relaxed">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Description</h3>
+                    <div className="prose max-w-none">
                       <PortableText value={product.description} components={portableTextComponents} />
                     </div>
                   </div>
                 )}
 
-                {/* Common Names */}
                 {product.commonNames && product.commonNames.length > 0 && (
                   <div>
-                    <h3 className="text-2xl font-semibold text-slate-900 mb-6">Common Names</h3>
-                    <div className="flex flex-wrap gap-3">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Common Names</h3>
+                    <div className="flex flex-wrap gap-2">
                       {product.commonNames.map((name: string, index: number) => (
-                        <span key={index} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-sm font-medium border border-slate-200">
+                        <span key={index} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
                           {name}
                         </span>
                       ))}
@@ -484,17 +429,16 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   </div>
                 )}
 
-                {/* Flavor Profile */}
                 {product.flavor && (
                   <div>
-                    <h3 className="text-2xl font-semibold text-slate-900 mb-6">Flavor Profile</h3>
-                    <div className="grid md:grid-cols-3 gap-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Flavor Profile</h3>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {product.flavor.taste && (
-                        <div className="p-6 bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl border border-amber-200">
-                          <h4 className="font-semibold text-amber-800 mb-4 text-lg">Primary Taste</h4>
-                          <div className="flex flex-wrap gap-2">
+                        <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                          <h4 className="font-semibold text-blue-800 mb-2">Primary Taste</h4>
+                          <div className="flex flex-wrap gap-1">
                             {product.flavor.taste.map((taste: string, index: number) => (
-                              <span key={index} className="px-3 py-1 bg-amber-200 text-amber-800 rounded-lg text-sm font-medium">
+                              <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
                                 {taste}
                               </span>
                             ))}
@@ -503,16 +447,16 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       )}
 
                       {product.flavor.intensity && (
-                        <div className="p-6 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl border border-emerald-200">
-                          <h4 className="font-semibold text-emerald-800 mb-4 text-lg">Intensity</h4>
-                          <span className="px-4 py-2 bg-emerald-200 text-emerald-800 rounded-full text-sm font-medium capitalize">{product.flavor.intensity.replace("_", " ")}</span>
+                        <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                          <h4 className="font-semibold text-green-800 mb-2">Intensity</h4>
+                          <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm capitalize">{product.flavor.intensity.replace("_", " ")}</span>
                         </div>
                       )}
 
                       {product.flavor.aroma && (
-                        <div className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl border border-purple-200">
-                          <h4 className="font-semibold text-purple-800 mb-4 text-lg">Aroma</h4>
-                          <p className="text-purple-700 text-sm leading-relaxed">{product.flavor.aroma}</p>
+                        <div className="p-4 bg-purple-50 rounded-lg border border-purple-200 sm:col-span-2 lg:col-span-1">
+                          <h4 className="font-semibold text-purple-800 mb-2">Aroma</h4>
+                          <p className="text-purple-700 text-sm">{product.flavor.aroma}</p>
                         </div>
                       )}
                     </div>
@@ -523,61 +467,56 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
             {/* Specifications Tab */}
             {activeTab === "specifications" && product.specifications && (
-              <div className="space-y-12">
-                <h3 className="text-3xl font-calistoga text-slate-900 mb-8">Technical Specifications</h3>
+              <div className="space-y-8">
+                <h3 className="text-xl font-semibold text-gray-900">Technical Specifications</h3>
 
-                <div className="grid md:grid-cols-2 gap-12">
+                <div className="grid lg:grid-cols-2 gap-8">
                   {/* Quality Parameters */}
-                  <div className="space-y-6">
-                    <h4 className="text-xl font-semibold text-slate-900 mb-6">Quality Parameters</h4>
-
-                    {product.specifications.moisture && (
-                      <div className="flex items-center justify-between p-5 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-blue-200 rounded-lg">
-                            <Droplets className="text-blue-600" size={18} />
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">Quality Parameters</h4>
+                    <div className="space-y-3">
+                      {product.specifications.moisture && (
+                        <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg border border-blue-200">
+                          <div className="flex items-center gap-2">
+                            <Droplets className="text-blue-600" size={16} />
+                            <span className="text-blue-800 font-medium">Moisture Content</span>
                           </div>
-                          <span className="text-blue-800 font-medium">Moisture Content</span>
+                          <span className="font-semibold text-blue-800">{product.specifications.moisture}%</span>
                         </div>
-                        <span className="font-bold text-blue-800 text-lg">{product.specifications.moisture}%</span>
-                      </div>
-                    )}
+                      )}
 
-                    {product.specifications.purity && (
-                      <div className="flex items-center justify-between p-5 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-xl border border-emerald-200">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-emerald-200 rounded-lg">
-                            <Award className="text-emerald-600" size={18} />
+                      {product.specifications.purity && (
+                        <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg border border-green-200">
+                          <div className="flex items-center gap-2">
+                            <Award className="text-green-600" size={16} />
+                            <span className="text-green-800 font-medium">Purity</span>
                           </div>
-                          <span className="text-emerald-800 font-medium">Purity</span>
+                          <span className="font-semibold text-green-800">{product.specifications.purity}%</span>
                         </div>
-                        <span className="font-bold text-emerald-800 text-lg">{product.specifications.purity}%</span>
-                      </div>
-                    )}
+                      )}
 
-                    {product.specifications.shelfLife && (
-                      <div className="flex items-center justify-between p-5 bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl border border-amber-200">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-amber-200 rounded-lg">
-                            <Clock3 className="text-amber-600" size={18} />
+                      {product.specifications.shelfLife && (
+                        <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg border border-orange-200">
+                          <div className="flex items-center gap-2">
+                            <Clock3 className="text-orange-600" size={16} />
+                            <span className="text-orange-800 font-medium">Shelf Life</span>
                           </div>
-                          <span className="text-amber-800 font-medium">Shelf Life</span>
+                          <span className="font-semibold text-orange-800">{product.specifications.shelfLife} months</span>
                         </div>
-                        <span className="font-bold text-amber-800 text-lg">{product.specifications.shelfLife} months</span>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
 
                   {/* Packaging & Storage */}
-                  <div className="space-y-6">
-                    <h4 className="text-xl font-semibold text-slate-900 mb-6">Packaging & Storage</h4>
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">Packaging & Storage</h4>
 
                     {product.specifications.packaging && (
-                      <div className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border border-purple-200">
-                        <h5 className="font-semibold text-purple-800 mb-4 text-lg">Available Packaging</h5>
+                      <div className="mb-4 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                        <h5 className="font-semibold text-purple-800 mb-2">Available Packaging</h5>
                         <div className="flex flex-wrap gap-2">
                           {product.specifications.packaging.map((pkg: string, index: number) => (
-                            <span key={index} className="px-3 py-2 bg-purple-200 text-purple-800 rounded-lg text-sm font-medium">
+                            <span key={index} className="px-2 py-1 bg-purple-100 text-purple-800 rounded text-sm">
                               {pkg}
                             </span>
                           ))}
@@ -586,291 +525,90 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     )}
 
                     {product.specifications.storage && (
-                      <div className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200">
-                        <h5 className="font-semibold text-slate-800 mb-4 text-lg">Storage Conditions</h5>
-                        <p className="text-slate-700 text-sm leading-relaxed">{product.specifications.storage}</p>
+                      <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <h5 className="font-semibold text-gray-800 mb-2">Storage Conditions</h5>
+                        <p className="text-gray-700 text-sm">{product.specifications.storage}</p>
                       </div>
                     )}
                   </div>
                 </div>
               </div>
             )}
-            {activeTab === "culinary" && product.culinaryUses && product.culinaryUses.length > 0 && (
-              <div className="space-y-12">
-                <h3 className="text-3xl font-calistoga text-slate-900 mb-8">Culinary Applications</h3>
 
-                <div className="grid md:grid-cols-2 gap-12">
-                  {/* Quality Parameters */}
-                  <div className="space-y-6">
-                    <h4 className="text-xl font-semibold text-slate-900 mb-6">Culinary Uses</h4>
+            {/* Culinary Tab */}
+            {activeTab === "culinary" && (
+              <div className="space-y-8">
+                <h3 className="text-xl font-semibold text-gray-900">Culinary Applications</h3>
 
-                    {product.culinaryUses.map((use: string, index: number) => (
-                      <div key={index} className="flex items-start gap-4 p-6 bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl border border-amber-200 hover:shadow-md transition-shadow">
-                        <CheckCircle className="text-amber-600 mt-1 flex-shrink-0" size={20} />
-                        <span className="text-amber-800 font-medium leading-relaxed">{use}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Health Benefits */}
-                  <div className="space-y-6">
-                    <h4 className="text-xl font-semibold text-slate-900 mb-6">Health Benefits</h4>
-
-                    {/* Health Benefits */}
-                    {product.healthBenefits && product.healthBenefits.length > 0 && (
-                      <div className="space-y-4">
-                        {product.healthBenefits.map((benefit: string, index: number) => (
-                          <div key={index} className="flex items-start gap-4 p-4 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-xl border border-emerald-200">
-                            <CheckCircle className="text-emerald-600 mt-1 flex-shrink-0" size={20} />
-                            <span className="text-emerald-800 text-sm font-medium leading-relaxed">{benefit}</span>
+                <div className="grid lg:grid-cols-2 gap-8">
+                  {/* Culinary Uses */}
+                  {product.culinaryUses && product.culinaryUses.length > 0 && (
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Culinary Uses</h4>
+                      <div className="space-y-3">
+                        {product.culinaryUses.map((use: string, index: number) => (
+                          <div key={index} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                            <CheckCircle className="text-blue-600 mt-0.5 flex-shrink-0" size={16} />
+                            <span className="text-blue-800 text-sm">{use}</span>
                           </div>
                         ))}
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
+
+                  {/* Health Benefits */}
+                  {product.healthBenefits && product.healthBenefits.length > 0 && (
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Health Benefits</h4>
+                      <div className="space-y-3">
+                        {product.healthBenefits.map((benefit: string, index: number) => (
+                          <div key={index} className="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                            <CheckCircle className="text-green-600 mt-0.5 flex-shrink-0" size={16} />
+                            <span className="text-green-800 text-sm">{benefit}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
           </motion.div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Related Products Section - OPTIMIZED CARD HEIGHT */}
+      {/* Related Products */}
       {relatedProducts && relatedProducts.length > 0 && (
-        <motion.section className="py-16 px-6 md:px-16 bg-gradient-to-b from-slate-50 to-white" initial="hidden" animate="visible" variants={staggerContainer}>
+        <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 border-t border-gray-200">
           <div className="max-w-7xl mx-auto">
-            <motion.h2 className="text-3xl font-calistoga text-slate-900 text-center mb-12">Related Products</motion.h2>
-            <motion.div className="grid md:grid-cols-3 lg:grid-cols-3 gap-8" variants={staggerContainer}>
-              {relatedProducts.slice(0, 3).map((relatedProduct: SanityDocument, index: number) => (
-                <motion.div key={relatedProduct._id} className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-200">
-                  {/* OPTIMIZED IMAGE CONTAINER - REDUCED HEIGHT */}
-                  <div className="aspect-[4/3] bg-slate-100 overflow-hidden relative">
+            <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Related Products</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedProducts.slice(0, 3).map((relatedProduct: SanityDocument) => (
+                <div key={relatedProduct._id} className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-200">
+                  <div className="aspect-[4/3] bg-gray-100 overflow-hidden">
                     {relatedProduct.images?.[0]?.asset?.url ? (
                       <Image
                         src={relatedProduct.images[0].asset.url}
                         alt={relatedProduct.images[0].alt || relatedProduct.name}
-                        fill
-                        quality={85}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 300px"
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        style={{ objectFit: "cover" }}
+                        width={400}
+                        height={300}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <Package size={48} className="text-slate-400" />
+                        <Package size={40} className="text-gray-400" />
                       </div>
                     )}
                   </div>
-                  <div className="p-6">
-                    <h3 className="font-semibold text-slate-900 mb-2 group-hover:text-amber-600 transition-colors line-clamp-2">{relatedProduct.name}</h3>
-                    {relatedProduct.shortDescription && <p className="text-slate-600 text-sm mb-4 line-clamp-2">{relatedProduct.shortDescription}</p>}
-                    <Link href={`/products/${relatedProduct.slug?.current}`} className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-medium text-sm group-hover:gap-3 transition-all">
-                      View Details
-                      <ArrowRight size={16} />
-                    </Link>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">{relatedProduct.name}</h3>
+                    {relatedProduct.shortDescription && <p className="text-gray-600 text-sm mb-3 line-clamp-2">{relatedProduct.shortDescription}</p>}
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           </div>
-        </motion.section>
-      )}
-
-      {/* Inquiry Modal */}
-      {showInquiryModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-8">
-              {/* Modal Header */}
-              <div className="flex items-center justify-between mb-8">
-                <div>
-                  <h2 className="text-2xl font-calistoga text-slate-900">Product Inquiry</h2>
-                  <p className="text-slate-600 mt-1">Get a personalized quote for {product.name}</p>
-                </div>
-                <button onClick={() => setShowInquiryModal(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
-                  <X size={24} className="text-slate-500" />
-                </button>
-              </div>
-
-              {/* Inquiry Form */}
-              <form onSubmit={handleInquirySubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-2">
-                      <User size={16} className="inline mr-2" />
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={inquiryForm.name}
-                      onChange={(e) => setInquiryForm({ ...inquiryForm, name: e.target.value })}
-                      className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
-                      placeholder="Your full name"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-2">
-                      <Mail size={16} className="inline mr-2" />
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={inquiryForm.email}
-                      onChange={(e) => setInquiryForm({ ...inquiryForm, email: e.target.value })}
-                      className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-2">
-                      <Building size={16} className="inline mr-2" />
-                      Company Name
-                    </label>
-                    <input
-                      type="text"
-                      value={inquiryForm.company}
-                      onChange={(e) => setInquiryForm({ ...inquiryForm, company: e.target.value })}
-                      className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
-                      placeholder="Your company name (optional)"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-2">
-                      <Package size={16} className="inline mr-2" />
-                      Required Quantity
-                    </label>
-                    <input
-                      type="text"
-                      value={inquiryForm.quantity}
-                      onChange={(e) => setInquiryForm({ ...inquiryForm, quantity: e.target.value })}
-                      className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
-                      placeholder="e.g., 100kg, 5 tons"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Additional Message</label>
-                  <textarea
-                    rows={4}
-                    value={inquiryForm.message}
-                    onChange={(e) => setInquiryForm({ ...inquiryForm, message: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors resize-none"
-                    placeholder="Any specific requirements, delivery location, or questions..."
-                  />
-                </div>
-
-                {/* Error message */}
-                {submitError && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4 flex items-center gap-2">
-                    <AlertCircle size={18} />
-                    <span>{submitError}</span>
-                  </div>
-                )}
-
-                {/* Form Actions */}
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="flex-1 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send size={20} />
-                        Send Inquiry
-                      </>
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowInquiryModal(false)}
-                    disabled={isSubmitting}
-                    className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-4 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50"
-                  >
-                    Cancel
-                  </button>
-                </div>
-
-                {/* Contact Info */}
-                <div className="pt-6 border-t border-slate-200">
-                  <p className="text-sm text-slate-600 text-center">
-                    Or contact us directly:{" "}
-                    <span className="inline-flex items-center gap-1 text-amber-600 font-medium">
-                      <Phone size={14} />
-                      +90 (542) 179-3483
-                    </span>{" "}
-                    |{" "}
-                    <span className="inline-flex items-center gap-1 text-amber-600 font-medium">
-                      <Mail size={14} />
-                      info@harikaspices.com
-                    </span>
-                  </p>
-                </div>
-              </form>
-            </div>
-          </motion.div>
-        </div>
-      )}
-
-      {/* Success Popup */}
-      {showSuccessPopup && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 rounded-full flex items-center justify-center">
-                <CheckCircle className="text-emerald-600" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Inquiry Sent Successfully!</h3>
-              <p className="text-slate-600 mb-6 leading-relaxed">{popupMessage}</p>
-              <button
-                onClick={() => setShowSuccessPopup(false)}
-                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                Got It!
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      )}
-
-      {/* Error Popup */}
-      {showErrorPopup && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
-                <AlertCircle className="text-red-600" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Oops! Something went wrong</h3>
-              <p className="text-slate-600 mb-6 leading-relaxed">{popupMessage}</p>
-              <div className="flex gap-3">
-                <button onClick={() => setShowErrorPopup(false)} className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-3 rounded-xl font-semibold transition-all duration-300">
-                  Close
-                </button>
-                <button
-                  onClick={() => {
-                    setShowErrorPopup(false);
-                    setShowInquiryModal(true);
-                  }}
-                  className="flex-1 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  Try Again
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+        </section>
       )}
     </div>
   );

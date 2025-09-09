@@ -118,8 +118,8 @@ const ContactPage = () => {
       <motion.section className="bg-[#392E20] py-20 px-4" initial="hidden" animate="visible" variants={containerVariants}>
         <div className="max-w-4xl mx-auto text-center">
           <motion.div>
-            <h1 className="text-4xl md:text-5xl font-calistoga text-white mt-12 mb-6">Get in Touch</h1>
-            <p className="text-lg md:text-xl text-gray-100 max-w-2xl mx-auto">Ready to source premium Indonesian spices? We&apos;re here to help you find the perfect products for your business needs.</p>
+            <h1 className="text-white font-calistoga text-3xl md:text-4xl lg:text-5xl mt-12 mb-6">Get in Touch</h1>
+            <p className="text-gray-200 text-medium md:text-lg max-w-3xl mx-auto">Ready to source premium Indonesian spices? We&apos;re here to help you find the perfect products for your business needs.</p>
           </motion.div>
         </div>
       </motion.section>
