@@ -58,7 +58,7 @@ const portableTextComponents = {
     h1: ({ children }: any) => <h1 className="text-2xl font-bold mb-4 text-gray-900">{children}</h1>,
     h2: ({ children }: any) => <h2 className="text-xl font-semibold mb-3 text-gray-900">{children}</h2>,
     h3: ({ children }: any) => <h3 className="text-lg font-semibold mb-2 text-gray-900">{children}</h3>,
-    blockquote: ({ children }: any) => <blockquote className="border-l-4 border-blue-500 pl-4 my-4 italic text-gray-600 bg-gray-50 py-3 rounded-r-lg">{children}</blockquote>,
+    blockquote: ({ children }: any) => <blockquote className="border-l-4 border-[#392E20] pl-4 my-4 italic text-gray-600 bg-gray-50 py-3 rounded-r-lg">{children}</blockquote>,
   },
   list: {
     bullet: ({ children }: any) => <ul className="list-disc ml-6 mb-4 space-y-1">{children}</ul>,
@@ -72,7 +72,7 @@ const portableTextComponents = {
     strong: ({ children }: any) => <strong className="font-semibold text-gray-900">{children}</strong>,
     em: ({ children }: any) => <em className="italic">{children}</em>,
     link: ({ children, value }: any) => (
-      <a href={value?.href} className="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer">
+      <a href={value?.href} className="text-[#392E20] hover:text-[#392E20]/70 underline" target="_blank" rel="noopener noreferrer">
         {children}
       </a>
     ),
@@ -93,7 +93,7 @@ const getAvailabilityConfig = (availability: string) => {
       icon: <AlertCircle size={16} />,
     },
     preorder: {
-      color: "text-blue-700 bg-blue-50 border-blue-200",
+      color: "text-[#392E20]/80 bg-[#392E20]/5 border-[#392E20]/20",
       text: "Pre-order",
       icon: <Clock size={16} />,
     },
@@ -130,10 +130,10 @@ const getHarvestSeasonText = (season: string) => {
 const getCertificationConfig = (cert: string) => {
   const configs = {
     organic: { icon: <Leaf size={18} />, label: "Organic Certified", color: "text-green-600" },
-    halal: { icon: <Shield size={18} />, label: "Halal Certified", color: "text-blue-600" },
+    halal: { icon: <Shield size={18} />, label: "Halal Certified", color: "text-[#392E20]" },
     haccp: { icon: <Award size={18} />, label: "HACCP", color: "text-purple-600" },
     iso22000: { icon: <Award size={18} />, label: "ISO 22000", color: "text-red-600" },
-    fda: { icon: <Shield size={18} />, label: "FDA Approved", color: "text-blue-800" },
+    fda: { icon: <Shield size={18} />, label: "FDA Approved", color: "text-[#392E20]" },
     eu_organic: { icon: <Leaf size={18} />, label: "EU Organic", color: "text-green-700" },
     kosher: { icon: <Shield size={18} />, label: "Kosher", color: "text-indigo-600" },
     fair_trade: { icon: <Heart size={18} />, label: "Fair Trade", color: "text-pink-600" },
@@ -238,15 +238,16 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
   return (
     <div className="min-h-screen bg-white">
+      <section className="relative h-[80px] bg-[#392E20] text-white"></section>
       {/* Breadcrumb */}
-      <div className="bg-gray-50 border-b border-gray-200 py-4 px-4 sm:px-6 lg:px-8">
+      <div className=" py-4 ">
         <div className="max-w-7xl mx-auto">
           <nav className="flex items-center space-x-2 text-sm">
-            <Link href="/" className="text-blue-600 hover:text-blue-800 transition-colors">
+            <Link href="/" className="text-[#392E20] hover:text-[#392E20]/70 transition-colors">
               Home
             </Link>
             <span className="text-gray-400">/</span>
-            <Link href="/products" className="text-blue-600 hover:text-blue-800 transition-colors">
+            <Link href="/products" className="text-[#392E20] hover:text-[#392E20]/70 transition-colors">
               Products
             </Link>
             <span className="text-gray-400">/</span>
@@ -288,7 +289,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                         key={index}
                         onClick={() => setSelectedImageIndex(index)}
                         className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
-                          selectedImageIndex === index ? "border-blue-500 shadow-md" : "border-gray-200 hover:border-gray-300"
+                          selectedImageIndex === index ? "border-[#392E20] shadow-md" : "border-gray-200 hover:border-gray-300"
                         }`}
                       >
                         <Image src={image.asset.url} alt={image.alt || product.name} width={80} height={80} className="w-full h-full object-cover" />
@@ -304,7 +305,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               {/* Badges */}
               <div className="flex flex-wrap gap-2">
                 {product.featured && (
-                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                  <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
                     <Star size={14} />
                     Featured
                   </span>
@@ -321,7 +322,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 leading-tight">{product.name}</h1>
                 {product.scientificName && <p className="text-lg text-gray-600 italic mb-2">{product.scientificName}</p>}
                 {product.category && (
-                  <p className="text-blue-600 font-medium">
+                  <p className="text-[#392E20] font-medium">
                     {product.category.name}
                     {product.subCategory && ` • ${product.subCategory.name}`}
                   </p>
@@ -335,7 +336,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {product.origin && (
                   <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <MapPin className="text-blue-600 flex-shrink-0" size={20} />
+                    <MapPin className="text-[#392E20] flex-shrink-0" size={20} />
                     <div>
                       <div className="text-sm text-gray-500 font-medium">Origin</div>
                       <div className="font-semibold text-gray-900">{product.origin}</div>
@@ -355,7 +356,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
                 {product.pricing?.priceRange && (
                   <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200 sm:col-span-2">
-                    <Package className="text-purple-600 flex-shrink-0" size={20} />
+                    <Package className="text-[#392E20] flex-shrink-0" size={20} />
                     <div>
                       <div className="text-sm text-gray-500 font-medium">Price Range</div>
                       <div className="font-semibold text-gray-900">{product.pricing.priceRange}</div>
@@ -368,7 +369,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <button
                   onClick={() => setShowInquiryModal(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+                  className="bg-[#392E20] hover:bg-[#392E20]/80 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
                 >
                   <Mail size={18} />
                   Request Quote
@@ -393,7 +394,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 sm:px-6 py-3 font-medium rounded-t-lg transition-colors duration-200 ${
-                  activeTab === tab.id ? "bg-white text-blue-600 border-b-2 border-blue-600 -mb-px" : "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+                  activeTab === tab.id ? "bg-white text-[#392E20] border-b-2 border-[#392E20] -mb-px" : "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
                 }`}
               >
                 <tab.icon size={18} />
@@ -434,11 +435,11 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Flavor Profile</h3>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {product.flavor.taste && (
-                        <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                          <h4 className="font-semibold text-blue-800 mb-2">Primary Taste</h4>
+                        <div className="p-4 bg-[#392E20]/5 rounded-lg border border-[#392E20]/20">
+                          <h4 className="font-semibold text-[#392E20] mb-2">Primary Taste</h4>
                           <div className="flex flex-wrap gap-1">
                             {product.flavor.taste.map((taste: string, index: number) => (
-                              <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
+                              <span key={index} className="px-2 py-1 bg-[#392E20]/10 text-[#392E20] rounded text-sm">
                                 {taste}
                               </span>
                             ))}
@@ -476,12 +477,12 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     <h4 className="text-lg font-semibold text-gray-900 mb-4">Quality Parameters</h4>
                     <div className="space-y-3">
                       {product.specifications.moisture && (
-                        <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <div className="flex justify-between items-center p-3 bg-[#392E20]/5 rounded-lg border border-[#392E20]/20">
                           <div className="flex items-center gap-2">
-                            <Droplets className="text-blue-600" size={16} />
-                            <span className="text-blue-800 font-medium">Moisture Content</span>
+                            <Droplets className="text-[#392E20]" size={16} />
+                            <span className="text-[#392E20] font-medium">Moisture Content</span>
                           </div>
-                          <span className="font-semibold text-blue-800">{product.specifications.moisture}%</span>
+                          <span className="font-semibold text-[#392E20]">{product.specifications.moisture}%</span>
                         </div>
                       )}
 
@@ -547,9 +548,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       <h4 className="text-lg font-semibold text-gray-900 mb-4">Culinary Uses</h4>
                       <div className="space-y-3">
                         {product.culinaryUses.map((use: string, index: number) => (
-                          <div key={index} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                            <CheckCircle className="text-blue-600 mt-0.5 flex-shrink-0" size={16} />
-                            <span className="text-blue-800 text-sm">{use}</span>
+                          <div key={index} className="flex items-start gap-3 p-3 bg-[#392E20]/5 rounded-lg border border-[#392E20]/20">
+                            <CheckCircle className="text-[#392E20] mt-0.5 flex-shrink-0" size={16} />
+                            <span className="text-[#392E20] text-sm">{use}</span>
                           </div>
                         ))}
                       </div>
@@ -585,25 +586,33 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedProducts.slice(0, 3).map((relatedProduct: SanityDocument) => (
                 <div key={relatedProduct._id} className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-200">
-                  <div className="aspect-[4/3] bg-gray-100 overflow-hidden">
-                    {relatedProduct.images?.[0]?.asset?.url ? (
-                      <Image
-                        src={relatedProduct.images[0].asset.url}
-                        alt={relatedProduct.images[0].alt || relatedProduct.name}
-                        width={400}
-                        height={300}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Package size={40} className="text-gray-400" />
+                  <Link href={`/products/${relatedProduct.slug.current}`}>
+                    <div className="cursor-pointer">
+                      <div className="aspect-[4/3] bg-gray-100 overflow-hidden">
+                        {relatedProduct.images?.[0]?.asset?.url ? (
+                          <Image
+                            src={relatedProduct.images[0].asset.url}
+                            alt={relatedProduct.images[0].alt || relatedProduct.name}
+                            width={400}
+                            height={300}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Package size={40} className="text-gray-400" />
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">{relatedProduct.name}</h3>
-                    {relatedProduct.shortDescription && <p className="text-gray-600 text-sm mb-3 line-clamp-2">{relatedProduct.shortDescription}</p>}
-                  </div>
+                      <div className="p-4">
+                        <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-[#392E20] transition-colors line-clamp-2">{relatedProduct.name}</h3>
+                        {relatedProduct.shortDescription && <p className="text-gray-600 text-sm mb-3 line-clamp-2">{relatedProduct.shortDescription}</p>}
+                        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                          <span className="text-[#392E20] font-semibold group-hover:text-[#392E20]/70 transition-colors text-sm">View Details</span>
+                          <ArrowRight size={14} className="text-[#392E20] group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
               ))}
             </div>
