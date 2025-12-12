@@ -370,14 +370,14 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
 
       {/* Related Articles */}
       {relatedPosts.length > 0 && (
-        <motion.section className="bg-gray-50 py-20 px-6 md:px-16" initial="hidden" animate="visible" variants={staggerContainer}>
-          <div className="max-w-7xl mx-auto">
+        <motion.section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" initial="hidden" animate="visible" variants={staggerContainer}>
+          <div className="">
             <motion.div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-calistoga text-[#392E20] mb-4">Related Articles</h2>
               <p className="text-gray-600 text-lg max-w-2xl mx-auto">Explore more insights and analysis from our industry experts</p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedPosts.slice(0, 3).map((relatedPost: SanityDocument, index: number) => (
                 <motion.article key={relatedPost._id} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
                   <Link href={`/articles/${relatedPost.slug.current}`}>
@@ -417,8 +417,8 @@ export default function ArticleDetail({ post, relatedPosts = [] }: ArticleDetail
       )}
 
       {/* Newsletter CTA */}
-      <div className="bg-gray-50 py-20 px-6">
-        <div className="max-w-full mx-6 md:mx-12">
+      <div className="bg-gray-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.section className="bg-gradient-to-br from-[#392E20] to-[#4A3B28] rounded-3xl py-16 px-8 relative overflow-hidden" initial="hidden" animate="visible">
             <div className="absolute inset-0 opacity-5">
               <div className="absolute top-1/4 left-1/3 w-64 h-64 bg-amber-400 rounded-full blur-3xl"></div>

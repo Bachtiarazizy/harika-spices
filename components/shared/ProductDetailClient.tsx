@@ -240,8 +240,8 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
     <div className="min-h-screen bg-white">
       <section className="relative h-[80px] bg-[#392E20] text-white"></section>
       {/* Breadcrumb */}
-      <div className=" py-4 ">
-        <div className="max-w-7xl mx-auto">
+      <div className=" py-8 ">
+        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <nav className="flex items-center space-x-2 text-sm">
             <Link href="/" className="text-[#392E20] hover:text-[#392E20]/70 transition-colors">
               Home
@@ -257,8 +257,8 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
       </div>
 
       {/* Product Header */}
-      <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section className=" px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
             <motion.div>
               <div className="space-y-4">
@@ -385,7 +385,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
       </section>
 
       {/* Product Details Tabs */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
+      <section className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-gray-200">
         <div className="max-w-7xl mx-auto">
           {/* Tab Navigation */}
           <div className="flex flex-wrap gap-1 mb-8 border-b border-gray-200">
@@ -580,7 +580,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
       {/* Related Products */}
       {relatedProducts && relatedProducts.length > 0 && (
-        <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 border-t border-gray-200">
+        <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-gray-50 border-t border-gray-200">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Related Products</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

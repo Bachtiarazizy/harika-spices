@@ -37,10 +37,8 @@ const TermsOfServicePage = () => {
       <motion.header className="bg-[#392E20] py-16 px-4" initial="hidden" animate="visible" variants={containerVariants}>
         <div className="max-w-4xl mx-auto">
           <motion.div className="text-center">
-            <h1 className="text-white font-calistoga text-3xl md:text-4xl lg:text-5xl mb-6 mt-12 mb-4">Terms of Service</h1>
-            <p className="text-lg text-gray-100 max-w-2xl mx-autotext-gray-200 text-medium md:text-lg max-w-3xl mx-auto">
-              These terms govern your use of our website and services. Please read them carefully before engaging with Harika Spices.
-            </p>
+            <h1 className="text-white font-calistoga text-3xl md:text-4xl lg:text-5xl mb-6 mt-12">Terms of Service</h1>
+            <p className="text-lg text-gray-100 max-w-2xl mx-autotext-gray-200 text-medium md:text-lg mx-auto">These terms govern your use of our website and services. Please read them carefully before engaging with Harika Spices.</p>
           </motion.div>
         </div>
       </motion.header>

@@ -159,7 +159,7 @@ export default function ProductsClient({ products, categories }: ProductsClientP
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <motion.section className="bg-[#392E20] py-12 md:py-20 px-4 md:px-6 relative overflow-hidden" initial="hidden" animate="visible" variants={staggerContainer}>
-        <div className="max-w-7xl mx-auto relative z-10">
+        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
           <motion.div className="text-center max-w-2xl mx-auto">
             <h1 className="text-white font-calistoga text-2xl md:text-4xl lg:text-5xl mb-4 md:mb-6 mt-8 md:mt-12 leading-tight px-2">Discover Our Premium Indonesian Spices</h1>
             <p className="text-gray-200 text-sm md:text-lg max-w-3xl mx-auto px-4">Authentic cloves, nutmeg, pepper and other spices ethically sourced, carefully selected, and ready for global trade.</p>
@@ -169,8 +169,8 @@ export default function ProductsClient({ products, categories }: ProductsClientP
 
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
-        <motion.section className="py-12 md:py-20 px-4 md:px-16" initial="hidden" animate="visible" variants={staggerContainer}>
-          <div className="max-w-7xl mx-auto">
+        <motion.section className="py-12 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" initial="hidden" animate="visible" variants={staggerContainer}>
+          <div className="">
             <motion.div className="text-center mb-8 md:mb-12">
               <h2 className="text-2xl md:text-4xl font-calistoga text-[#392E20] mb-3 md:mb-4">Featured Products</h2>
               <p className="hidden md:block text-gray-600 text-medium md:text-lg max-w-2xl mx-auto">Our most popular and premium quality spices, carefully selected for their exceptional taste and aroma.</p>

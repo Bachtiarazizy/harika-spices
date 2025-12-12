@@ -29,9 +29,16 @@ export default function CardSection() {
 
   return (
     <section className="relative bg-[#3a190a] py-16">
-      <div className="relative z-10 container mx-auto px-6 md:px-10">
+      <div className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Title */}
+        <motion.div className="mb-8" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }}>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-calistoga text-white leading-tight mb-6">Ethical Sourcing from Indonesia</h2>
+          <p className="text-base md:text-xl font-raleway text-gray-400 max-w-3xl">
+            As an Indonesian spices exporter, we source directly from local farming communities across Indonesia, including spice‑producing regions known for cloves, nutmeg, cinnamon, turmeric, and pepper.
+          </p>
+        </motion.div>
         {/* Cards Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {cards.map((card, index) => (
             <motion.div
               key={index}

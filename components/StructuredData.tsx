@@ -8,7 +8,7 @@ export default function StructuredData() {
     "@id": "https://harikaspices.com/#organization",
     name: "Harika Spices",
     alternateName: ["PT Harika Spices Indonesia", "Harika Spice Exporter"],
-    description: "Premium Indonesian spice exporter specializing in bulk export of high-quality cloves, vanilla, turmeric, ginger, and other authentic Indonesian spices. Sustainable sourcing, quality assured.",
+    description: "Harika Spices is a premium Indonesian spices exporter and supplier, providing export‑quality spices sourced ethically from Indonesia. Trusted global supply.",
     url: "https://harikaspices.com",
     logo: {
       "@type": "ImageObject",
@@ -67,7 +67,8 @@ export default function StructuredData() {
     industry: "Food Export",
     naics: "311942",
     isicV4: "1079",
-    keywords: "Indonesian spices, bulk spice exporter, premium cloves, vanilla beans, turmeric powder, spice supplier, sustainable spices, export quality spices",
+    keywords:
+      "Indonesian spices supplier, premium Indonesian spices, Bulk spices Indonesia, contact Indonesian spices exporter,Indonesian spices supplier inquiry,Indonesian spices exporter company,spices export from Indonesia, bulk Indonesian spices supplier, spices supplier Indonesia, Indonesian spice products, sustainable spice sourcing Indonesia, Export quality spices Indonesiar, export quality Indonesian spices",
     slogan: "Premium Indonesian Spices for Global Markets",
     award: ["ISO 22000 Food Safety Management", "HACCP Certified", "Organic Certification"],
     memberOf: {
@@ -84,7 +85,7 @@ export default function StructuredData() {
     name: "Harika Spices",
     alternateName: "Harika Spices Official Website",
     url: "https://harikaspices.com",
-    description: "Premium Indonesian spice exporter - bulk supplier of cloves, vanilla, turmeric, and other authentic Indonesian spices",
+    description: "Harika Spices is a premium Indonesian spices exporter and supplier, providing export‑quality spices sourced ethically from Indonesia. Trusted global supply.",
     publisher: {
       "@id": "https://harikaspices.com/#organization",
     },

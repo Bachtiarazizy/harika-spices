@@ -73,17 +73,17 @@ export default async function ProductsPage() {
 
 // Generate metadata untuk SEO
 export const metadata = {
-  title: "Premium Indonesian Spices & Products",
-  description: "Discover our premium collection of Indonesian spices and agricultural products. From authentic spices to specialty items, sourced directly from Indonesian farmers.",
-  keywords: "Indonesian spices exporter, premium spices, spice export, agricultural products, Indonesia spice supplier",
+  title: "Our Products | Premium Indonesian Spices for Export",
+  description: "Explore our range of premium Indonesian spices, including whole spices, blends, and powder. Export-grade, ethically sourced, and processed to global standards.",
+  keywords: "premium Indonesian spices, Indonesian spice products, whole spices supplier, ground spices Indonesia, bulk spice export",
   openGraph: {
-    title: "Premium Indonesian Spices & Products",
-    description: "Discover our premium collection of Indonesian spices and agricultural products. From authentic spices to specialty items, sourced directly from Indonesian farmers.",
+    title: "Our Products | Premium Indonesian Spices for Export",
+    description: "Explore our range of premium Indonesian spices, including whole spices, blends, and powder. Export-grade, ethically sourced, and processed to global standards.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Premium Indonesian Spices & Products",
-    description: "Discover our premium collection of Indonesian spices and agricultural products.",
+    title: "Our Products | Premium Indonesian Spices for Export",
+    description: "Explore our range of premium Indonesian spices, including whole spices, blends, and powder. Export-grade, ethically sourced, and processed to global standards.",
   },
 };

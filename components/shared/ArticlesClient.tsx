@@ -60,14 +60,14 @@ export default function BlogPostsClient({ featuredPosts, allPosts }: BlogPostsCl
 
       {otherFeaturedPosts.length > 0 && (
         <section className="bg-white py-20 font-raleway">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <motion.div className="mb-16" initial="hidden" animate="visible" variants={containerVariants}>
               <motion.div variants={itemVariants} className="text-center">
                 <h2 className="text-3xl md:text-4xl font-calistoga text-gray-900 leading-snug mb-6">Featured Articles</h2>
               </motion.div>
             </motion.div>
 
-            <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" initial="hidden" animate="visible" variants={containerVariants}>
+            <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" initial="hidden" animate="visible" variants={containerVariants}>
               {otherFeaturedPosts.map((post) => (
                 <motion.article
                   key={post._id}
@@ -130,8 +130,8 @@ export default function BlogPostsClient({ featuredPosts, allPosts }: BlogPostsCl
       )}
 
       {/* All Articles Section */}
-      <section className="bg-[#392E20] py-20 px-6 md:px-16">
-        <div className="max-w-7xl mx-auto">
+      <section className="bg-[#392E20] py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="">
           <motion.div className="mb-16" initial="hidden" animate="visible" variants={containerVariants}>
             <motion.div variants={itemVariants} className="text-center">
               <h1 className="text-white font-calistoga text-3xl md:text-4xl lg:text-5xl mb-4">All Articles</h1>
@@ -141,7 +141,7 @@ export default function BlogPostsClient({ featuredPosts, allPosts }: BlogPostsCl
 
           {/* Articles Grid */}
           {allPosts.length > 0 ? (
-            <motion.div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8" initial="hidden" animate="visible" variants={containerVariants}>
+            <motion.div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8" initial="hidden" animate="visible" variants={containerVariants}>
               {allPosts.map((post, index) => (
                 <motion.article key={post._id} variants={itemVariants} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="group bg-[#4D3D2A] rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
                   <Link href={`articles/${post.slug.current}`} className="block">
@@ -213,7 +213,7 @@ export default function BlogPostsClient({ featuredPosts, allPosts }: BlogPostsCl
 
       {/* CTA Section */}
       <section className="bg-gray-100 py-20 font-raleway">
-        <div className="container mx-auto px-6 lg:px-10">
+        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="bg-white rounded-2xl p-8 md:p-12 text-center shadow-lg">
             <h3 className="text-2xl md:text-3xl font-calistoga text-gray-900 mb-4">Stay Ahead of Market Trends</h3>
             <p className="text-gray-700 mb-8 max-w-2xl mx-auto">

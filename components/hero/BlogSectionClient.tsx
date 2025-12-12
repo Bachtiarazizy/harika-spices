@@ -151,7 +151,7 @@ export default function BlogCardSectionClient({
 
   return (
     <section className="bg-gray-100 py-32 font-raleway">
-      <div className="container mx-auto px-6 lg:px-10">
+      <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div className="text-center mb-16" initial="hidden" animate="visible" variants={containerVariants}>
           <motion.div>
@@ -162,7 +162,7 @@ export default function BlogCardSectionClient({
         </motion.div>
 
         {/* Blog Cards Grid */}
-        <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" initial="hidden" animate="visible" variants={containerVariants}>
+        <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" initial="hidden" animate="visible" variants={containerVariants}>
           {postsToShow.map((post, index) => (
             <motion.article key={getPostId(post)} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="group bg-[#4D3D2A] rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden">
               <Link href={`/articles/${getPostSlug(post)}`}>
